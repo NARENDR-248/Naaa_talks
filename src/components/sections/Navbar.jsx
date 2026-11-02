@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
-import { Menu } from 'lucide-react'
+import { ArrowUpRight, Menu } from 'lucide-react'
 import { portfolioData } from '@/data/portfolioData'
 import { useSocials } from '@/hooks/useSiteContent'
 import { useJourneys } from '@/hooks/useJourneys'
 import { cn } from '@/lib/cn'
-import { Cta, Shell, Wordmark } from '@/components/portfolio/Kit'
+import { Cta, Wordmark } from '@/components/portfolio/Kit'
 import MobileMenu from '@/components/portfolio/MobileMenu'
 
 const { nav, navAll, brand } = portfolioData
@@ -52,7 +52,7 @@ export default function Navbar() {
 
   return (
     <header className={cn('fixed inset-x-0 top-0 z-50 transition-colors duration-300', scrolled ? 'border-b border-white/[0.06] bg-void/80 backdrop-blur-xl' : 'bg-transparent')}>
-      <Shell className="flex h-16 items-center justify-between gap-4">
+      <div className="mx-auto flex h-16 w-full max-w-[100rem] items-center justify-between gap-4 px-5 sm:px-8 lg:h-20 lg:px-[5vw] 2xl:px-[6vw]">
         <Link to="/" aria-label={`${brand.name} — home`}>
           <Wordmark />
         </Link>
@@ -62,7 +62,7 @@ export default function Navbar() {
             <NavLink
               key={l.href}
               to={l.href}
-              className={({ isActive }) => cn('rounded-full px-3.5 py-2 text-[13px] font-medium transition hover:text-white', isActive ? 'text-white' : 'text-white/60')}
+              className={({ isActive }) => cn('rounded-full px-3.5 py-2 text-[13px] font-medium transition hover:text-white xl:px-4 xl:text-[15px]', isActive ? 'text-white' : 'text-white/75')}
             >
               {l.label}
             </NavLink>
@@ -70,11 +70,11 @@ export default function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <NavLink to="/contact" className={({ isActive }) => cn('hidden rounded-full px-3.5 py-2 text-[13px] font-medium hover:text-white sm:inline-flex', isActive ? 'text-white' : 'text-white/80')}>
+          <NavLink to="/contact" className={({ isActive }) => cn('hidden rounded-full px-3.5 py-2 text-[13px] font-medium hover:text-white sm:inline-flex xl:mr-3 xl:text-[15px]', isActive ? 'text-white' : 'text-white/85')}>
             Contact
           </NavLink>
           <span className="hidden sm:block">
-            <Cta href={journeys.business.href} size="sm">{journeys.business.label}</Cta>
+            <Cta href={journeys.business.href} size="sm" className="shadow-[0_8px_30px_-8px_rgb(255_16_31/0.8)] xl:h-11 xl:px-6 xl:text-[15px]">{journeys.business.label} <ArrowUpRight className="size-4" aria-hidden /></Cta>
           </span>
           <button
             ref={menuButtonRef}
@@ -88,7 +88,7 @@ export default function Navbar() {
             <Menu className="size-5" />
           </button>
         </div>
-      </Shell>
+      </div>
 
       <MobileMenu
         open={open}

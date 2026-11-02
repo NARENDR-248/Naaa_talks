@@ -65,7 +65,7 @@ export const portfolioData = {
       logo: '', // image URL; empty shows the NAAA/TALKS wordmark
     },
     // Labels for the three journey buttons used across the site.
-    ctas: { business: 'Work with us', influencer: 'Become an influencer', careers: 'Join our team' },
+    ctas: { business: 'Work with us', influencer: 'Become an influencer', careers: 'Join our team', showreel: 'Watch Showreel' },
     footer: {
       text: 'A creative marketing, content production and influencer development agency.',
       copyright: 'All rights reserved.',
@@ -85,10 +85,21 @@ export const portfolioData = {
       careers: "Hello NAAA TALKS Team! I'm interested in career opportunities at your company. Could you please share more information?",
     },
     hero: {
-      eyebrow: 'Creative agency · Influencer marketing · Content production',
-      title: ["We don't just create content.", 'We create growth.'],
-      subtitle: 'We turn creative ideas into powerful stories, help businesses grow and transform aspiring individuals into confident content creators and influencers.',
-      note: 'Create. Educate. Grow.',
+      eyebrow: 'Creative Agency for Modern Creators',
+      title: ['Create Content.', 'Build Influence.'],
+      highlight: 'Grow Your Brand.', // on the red brush stroke
+      subtitle: 'We help creators and brands grow on Instagram with strategic content, influencer marketing, and end-to-end production that delivers real results.',
+      note: 'Create. Educate. Grow.', // brush tagline, bottom right
+    },
+    // Floating cards beside the hero portrait. Keep isSample on until these are real results.
+    heroStats: {
+      isSample: true,
+      sampleNote: 'Sample figures',
+      items: [
+        { value: '128K+', label: 'Followers Growth' },
+        { value: '5.4M+', label: 'Reach Generated' },
+        { value: '12.8%', label: 'Avg. Engagement' },
+      ],
     },
     contact: {
       email: 'Naaatalks@gmail.com',

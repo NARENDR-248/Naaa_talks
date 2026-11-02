@@ -178,11 +178,23 @@ export const SETTINGS_GROUPS = [
   { key: 'socials', label: 'Social media links', special: 'socials' },
   {
     key: 'hero', label: 'Homepage hero', fields: [
-      { name: 'eyebrow', label: 'Small label above the heading', type: 'text' },
+      { name: 'eyebrow', label: 'Badge above the heading', type: 'text' },
       { name: 'title.0', label: 'Heading — line 1', type: 'text', required: true },
-      { name: 'title.1', label: 'Heading — line 2 (red)', type: 'text' },
+      { name: 'title.1', label: 'Heading — line 2', type: 'text' },
+      { name: 'highlight', label: 'Heading — line on the red brush', type: 'text' },
       { name: 'subtitle', label: 'Description', type: 'textarea', required: true },
-      { name: 'note', label: 'Tagline under the buttons', type: 'text' },
+      { name: 'note', label: 'Brush tagline (bottom right)', type: 'text' },
+    ],
+  },
+  {
+    key: 'heroStats', label: 'Homepage hero statistics', fields: [
+      { name: 'isSample', label: 'These are sample figures (shows a “Sample figures” label) — untick only for real results', type: 'boolean' },
+      { name: 'items.0.value', label: 'Card 1 — number (e.g. 128K+)', type: 'text' },
+      { name: 'items.0.label', label: 'Card 1 — label', type: 'text' },
+      { name: 'items.1.value', label: 'Card 2 — number', type: 'text' },
+      { name: 'items.1.label', label: 'Card 2 — label', type: 'text' },
+      { name: 'items.2.value', label: 'Card 3 — number', type: 'text' },
+      { name: 'items.2.label', label: 'Card 3 — label', type: 'text' },
     ],
   },
   {
@@ -190,6 +202,7 @@ export const SETTINGS_GROUPS = [
       { name: 'business', label: 'Business journey button', type: 'text', required: true },
       { name: 'influencer', label: 'Influencer journey button', type: 'text', required: true },
       { name: 'careers', label: 'Careers journey button', type: 'text', required: true },
+      { name: 'showreel', label: 'Hero “Watch Showreel” button (opens the portfolio)', type: 'text' },
     ],
   },
   { key: 'stats', label: 'Statistics', special: 'stats' },
