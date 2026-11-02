@@ -35,8 +35,9 @@ export function mergeSettings(saved = {}) {
 
 // Published content merged over the built-in defaults. A collection with no rows
 // in the database keeps showing its defaults (e.g. sample portfolio pieces).
+// FAQs are loaded separately (fetchPublishedFaqs) and never fall back to defaults.
 export async function loadSiteContent() {
-  const tables = Object.keys(DEFAULTS)
+  const tables = Object.keys(DEFAULTS).filter((t) => t !== 'faqs')
   let settings
   let rows
 
@@ -61,6 +62,19 @@ export async function loadSiteContent() {
   )
 
   return { settings: mergeSettings(settings), ...collections }
+}
+
+// Published FAQs in display order — exactly what the database holds, so an empty
+// table shows an empty state rather than built-in sample questions.
+export async function fetchPublishedFaqs() {
+  if (DEMO_MODE) return (await demoStore.list('faqs')).filter((f) => f.published !== false).sort(bySort)
+  const { data, error } = await supabase
+    .from('faqs')
+    .select('id, question, answer, published, sort_order')
+    .eq('published', true)
+    .order('sort_order', { ascending: true })
+  if (error) fail(error, 'Could not load FAQs.')
+  return data ?? []
 }
 
 // ── Visitor submissions ──────────────────────────────────────────────────────

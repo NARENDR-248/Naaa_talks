@@ -8,7 +8,8 @@ import { useSiteContentReload } from '@/hooks/useSiteContent'
 import { cn } from '@/lib/cn'
 import { AdminButton, AdminPage, ConfirmDialog, Drawer, EmptyState, ErrorBox, Loading, Notice, SchemaField } from '@/components/admin/AdminKit'
 
-const HAS_DEFAULTS = { projects: d.defaultProjects, services: d.defaultServices, jobs: d.defaultJobs, faqs: d.defaultFaqs }
+// Collections whose built-in defaults show on the website until real rows exist (FAQs never fall back).
+const HAS_DEFAULTS = { projects: d.defaultProjects, services: d.defaultServices, jobs: d.defaultJobs }
 const PERMISSION_GATED = ['testimonials', 'clients']
 
 function blankRow(config) {

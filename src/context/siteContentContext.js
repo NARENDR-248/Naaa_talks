@@ -10,7 +10,6 @@ export const initialContent = {
   jobs: d.defaultJobs,
   testimonials: d.defaultTestimonials,
   clients: d.defaultClients,
-  faqs: d.defaultFaqs,
 }
 
-export const SiteContentContext = createContext({ content: initialContent, loaded: false, reload: () => {} })
+export const SiteContentContext = createContext({ content: initialContent, loaded: false, reload: () => {}, faqs: { status: 'loading', items: [], error: null } })

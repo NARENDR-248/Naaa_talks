@@ -14,6 +14,7 @@ import ReelGallery from '@/components/sections/ReelGallery'
 import Clients from '@/components/sections/Clients'
 import Testimonials from '@/components/sections/Testimonials'
 import CareersTeaser from '@/components/sections/CareersTeaser'
+import FAQ from '@/components/sections/FAQ'
 import ContactSection from '@/components/sections/ContactSection'
 
 // Section order follows the NAAA TALKS brief (navbar and footer come from SiteLayout).
@@ -36,6 +37,7 @@ export default function HomePage() {
       <Clients />
       <Testimonials />
       <CareersTeaser />
+      <FAQ />
       <ContactSection />
     </>
   )
