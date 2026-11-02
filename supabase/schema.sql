@@ -13,8 +13,6 @@
 --   4. Run supabase/verify.sql — every row should say OK.
 -- ════════════════════════════════════════════════════════════════════════════
 
-create extension if not exists pgcrypto;
-
 -- ── Admins ──────────────────────────────────────────────────────────────────
 create table if not exists public.admin_users (
   user_id uuid primary key references auth.users(id) on delete cascade,
