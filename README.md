@@ -52,6 +52,7 @@ only their file name. Demo login is disabled automatically once keys are set.
    select id from auth.users where email = 'you@example.com';
    ```
 5. **Authentication → Providers → Email**: turn **off** "Allow new users to sign up".
+   Then run [`supabase/verify.sql`](supabase/verify.sql) — a read-only report where every row should say OK.
 6. Create `.env.local` (see [`.env.example`](.env.example)):
    ```
    VITE_SUPABASE_URL=https://xxxx.supabase.co
@@ -91,5 +92,6 @@ src/
   components/layout/     SiteLayout, PageHero, Blocks, WhatsApp button
   services/              api.js (all data access), demoStore.js, collections.js (admin schemas)
   context/ hooks/ lib/
-supabase/schema.sql      tables, RLS, storage
+supabase/schema.sql      tables, RLS, storage, grants (safe to re-run)
+supabase/verify.sql      read-only setup check
 ```

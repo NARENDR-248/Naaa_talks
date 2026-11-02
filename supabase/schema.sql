@@ -10,6 +10,7 @@
 --        select id from auth.users where email = 'admin@example.com';
 --   3. Authentication → Providers → Email: turn OFF "Allow new users to sign up"
 --      so nobody can create their own account.
+--   4. Run supabase/verify.sql — every row should say OK.
 -- ════════════════════════════════════════════════════════════════════════════
 
 create extension if not exists pgcrypto;
@@ -256,3 +257,62 @@ drop policy if exists "resumes admin read" on storage.objects;
 create policy "resumes admin read" on storage.objects for select to authenticated using (bucket_id = 'resumes' and public.is_admin());
 drop policy if exists "resumes admin delete" on storage.objects;
 create policy "resumes admin delete" on storage.objects for delete to authenticated using (bucket_id = 'resumes' and public.is_admin());
+-- No update policy on resumes: nobody can overwrite an uploaded file.
+
+-- ── updated_at timestamps ───────────────────────────────────────────────────
+create or replace function public.set_updated_at() returns trigger
+language plpgsql set search_path = public as $$
+begin
+  new.updated_at = now();
+  return new;
+end $$;
+
+do $$
+declare t text;
+begin
+  foreach t in array array['projects', 'services', 'jobs', 'testimonials', 'clients', 'faqs'] loop
+    execute format('alter table public.%I add column if not exists updated_at timestamptz', t);
+  end loop;
+  -- Update-only, so a fresh public submission still arrives with updated_at null.
+  foreach t in array array['site_settings', 'projects', 'services', 'jobs', 'testimonials', 'clients', 'faqs',
+                           'business_enquiries', 'influencer_applications', 'job_applications'] loop
+    execute format('drop trigger if exists set_updated_at on public.%I', t);
+    execute format('create trigger set_updated_at before update on public.%I for each row execute function public.set_updated_at()', t);
+  end loop;
+end $$;
+
+-- ── Indexes ─────────────────────────────────────────────────────────────────
+do $$
+declare t text;
+begin
+  foreach t in array array['projects', 'services', 'jobs', 'testimonials', 'clients', 'faqs'] loop
+    execute format('create index if not exists %I on public.%I (published, sort_order)', t || '_published_sort_idx', t);
+  end loop;
+  foreach t in array array['business_enquiries', 'influencer_applications', 'job_applications'] loop
+    execute format('create index if not exists %I on public.%I (created_at desc)', t || '_created_idx', t);
+    execute format('create index if not exists %I on public.%I (status) where not archived', t || '_status_idx', t);
+    execute format('create unique index if not exists %I on public.%I (reference) where reference is not null', t || '_reference_key', t);
+  end loop;
+end $$;
+create index if not exists job_applications_job_id_idx on public.job_applications (job_id);
+
+-- ── API access (grants) ─────────────────────────────────────────────────────
+-- Newer Supabase projects do not expose new tables to the website API by default.
+-- These grants only make the tables reachable; the RLS policies above still
+-- decide which rows each visitor may read or write.
+grant usage on schema public to anon, authenticated;
+grant select on public.site_settings, public.projects, public.services, public.jobs,
+  public.testimonials, public.clients, public.faqs to anon, authenticated;
+grant insert, update, delete on public.site_settings, public.projects, public.services, public.jobs,
+  public.testimonials, public.clients, public.faqs to authenticated;
+grant insert on public.business_enquiries, public.influencer_applications, public.job_applications to anon, authenticated;
+grant select, update, delete on public.business_enquiries, public.influencer_applications, public.job_applications to authenticated;
+-- admin_users: signed-in users may only check their own row; nobody can make
+-- themselves an admin through the API (add admins in the SQL editor only).
+revoke all on public.admin_users from anon, authenticated;
+grant select on public.admin_users to authenticated;
+revoke all on function public.is_admin() from public;
+grant execute on function public.is_admin() to anon, authenticated;
+
+-- Make the website API pick up the new tables immediately.
+notify pgrst, 'reload schema';
