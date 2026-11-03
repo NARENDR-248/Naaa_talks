@@ -1,28 +1,25 @@
 import { portfolioData } from '@/data/portfolioData'
 import { usePageMeta } from '@/hooks/usePageMeta'
-import { useJourneys } from '@/hooks/useJourneys'
-import PageHero from '@/components/layout/PageHero'
-import { Cta } from '@/components/portfolio/Kit'
-import AboutAgency from '@/components/sections/AboutAgency'
-import Pillars from '@/components/sections/Pillars'
-import ProductionTeam from '@/components/sections/ProductionTeam'
-import BrandPromise from '@/components/sections/BrandPromise'
+import AboutHero from '@/components/about/AboutHero'
+import AboutStory from '@/components/about/AboutStory'
+import AboutBeliefs from '@/components/about/AboutBeliefs'
+import AboutCapabilities from '@/components/about/AboutCapabilities'
+import AboutProcess from '@/components/about/AboutProcess'
+import AboutAcademy from '@/components/about/AboutAcademy'
+import AboutFinalCta from '@/components/about/AboutFinalCta'
 
-const page = portfolioData.pages.about
-
+// Hero → story → values → what we do → process → academy → call to action.
 export default function AboutPage() {
-  usePageMeta('About Us', page.subtitle)
-  const j = useJourneys()
+  usePageMeta('About Us', portfolioData.about.heroParagraphs[0])
   return (
     <>
-      <PageHero crumbs={[{ label: 'About Us' }]} eyebrow={page.eyebrow} title={page.title} subtitle={page.subtitle}>
-        <Cta href={j.business.href}>{j.business.label}</Cta>
-        <Cta href={j.influencer.href} variant="outline">{j.influencer.label}</Cta>
-      </PageHero>
-      <AboutAgency />
-      <Pillars />
-      <ProductionTeam />
-      <BrandPromise />
+      <AboutHero />
+      <AboutStory />
+      <AboutBeliefs />
+      <AboutCapabilities />
+      <AboutProcess />
+      <AboutAcademy />
+      <AboutFinalCta />
     </>
   )
 }

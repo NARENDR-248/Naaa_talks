@@ -67,7 +67,7 @@ export const portfolioData = {
       logo: '', // admin-uploaded logo; empty uses brand.logo
     },
     // Labels for the three journey buttons used across the site.
-    ctas: { business: 'Work with us', influencer: 'Become an influencer', careers: 'Join our team', showreel: 'Explore Our Work' },
+    ctas: { business: 'Work with us', influencer: 'Become an influencer', careers: 'Join our team', showreel: 'Watch Showreel' },
     footer: {
       text: 'A creative marketing, content production and influencer development agency.',
       copyright: 'All rights reserved.',
@@ -87,10 +87,10 @@ export const portfolioData = {
       careers: "Hello NAAA TALKS Team! I'm interested in career opportunities at your company. Could you please share more information?",
     },
     hero: {
-      eyebrow: 'Creative Agency for Modern Creators',
+      eyebrow: 'Creative & Digital Marketing Agency',
       title: ['Create Content.', 'Build Influence.'],
       highlight: 'Grow Your Brand.', // on the red brush stroke
-      subtitle: 'We help creators and brands grow on Instagram with strategic content, influencer marketing, and end-to-end production that delivers real results.',
+      subtitle: 'We help businesses grow with high-quality content creation, strategic digital marketing and powerful storytelling.',
       note: 'Create. Educate. Grow.', // brush tagline, bottom right
     },
     // Floating cards beside the hero portrait. Keep isSample on until these are real results.
@@ -98,9 +98,9 @@ export const portfolioData = {
       isSample: true,
       sampleNote: 'Sample figures',
       items: [
-        { value: '128K+', label: 'Followers Growth' },
-        { value: '5.4M+', label: 'Reach Generated' },
-        { value: '12.8%', label: 'Avg. Engagement' },
+        { value: '128K+', label: 'Total Views' },
+        { value: '6.4K+', label: 'Creators Trained' },
+        { value: '12.9%', label: 'Avg. Growth' },
       ],
     },
     contact: {
@@ -120,10 +120,10 @@ export const portfolioData = {
       isSample: true,
       sampleNote: 'Placeholder figures — update them from the admin dashboard.',
       items: [
-        { value: 50, suffix: '+', label: 'Projects delivered' },
-        { value: 30, suffix: '+', label: 'Creators trained' },
-        { value: 20, suffix: '+', label: 'Brands served' },
-        { value: 4, suffix: '', label: 'Creative disciplines' },
+        { value: 17, suffix: '+', label: 'Years of Experience', icon: 'calendar' },
+        { value: 10, suffix: '+', label: 'Creative Projects', icon: 'layers' },
+        { value: 7, suffix: '+', label: 'Training Programs', icon: 'education' },
+        { value: 1, suffix: '', label: 'Core Brand', icon: 'brand' },
       ],
     },
   },
@@ -146,6 +146,41 @@ export const portfolioData = {
       { key: 'approach', title: 'Our Approach', text: 'Story first, then strategy. We understand your audience and goals, plan the idea, produce it professionally, publish it and keep improving it with what the results tell us.' },
       { key: 'team', title: 'Meet Our Team', text: 'Content creators, videographers, video editors, script writers and marketers working together under one roof — from the first idea to the final frame.' },
     ],
+    // About page: what we stand for, and how a project moves.
+    values: [
+      { icon: 'creativity', title: 'Creativity', text: 'Fresh ideas and bold storytelling in everything we make.' },
+      { icon: 'innovation', title: 'Innovation', text: 'New formats, platforms and techniques — always learning.' },
+      { icon: 'authenticity', title: 'Authenticity', text: 'Honest work, real results and content that feels true.' },
+      { icon: 'collaboration', title: 'Collaboration', text: 'Brands, creators and our team building it together.' },
+    ],
+    // ── About page ──
+    heroTitle: ['Our Story.', 'Our Creativity.', 'Our Vision.'], // last line in brand red
+    heroParagraphs: [
+      'Naaa Talks is a creative and digital marketing agency dedicated to helping businesses grow through content creation, digital marketing and powerful storytelling.',
+      'Through Naaa Talks Academy, we also empower aspiring creators with practical skills in content creation, digital marketing and video editing.',
+    ],
+    // Story cards that lead somewhere get an arrow.
+    blockLinks: { approach: '#process', team: '/content-production#team' },
+    capabilities: [
+      { icon: 'content', title: 'Content Creation', text: 'Reels, posts and stories built around ideas people remember.', href: '/content-production' },
+      { icon: 'marketing', title: 'Digital Marketing', text: 'Strategy, social media and campaigns that grow businesses.', href: '/services' },
+      { icon: 'video', title: 'Video Production', text: 'Concept, script, shoot and edit — produced in-house.', href: '/content-production' },
+      { icon: 'education', title: 'Creator Education', text: 'Practical courses through Naaa Talks Academy.', href: '/academy' },
+    ],
+    process: [
+      { title: 'Discover', text: 'Understand the brand, audience and objectives.' },
+      { title: 'Strategize', text: 'Develop creative ideas and a clear execution plan.' },
+      { title: 'Create', text: 'Produce engaging content and marketing campaigns.' },
+      { title: 'Grow', text: 'Measure results, improve performance and build growth.' },
+    ],
+    academyPromo: {
+      title: ['Building the Next Generation', 'of Creators.'],
+      text: 'Learn practical creative skills, develop your personal brand and turn your passion into opportunities.',
+    },
+    finalCta: {
+      title: ['Have an Idea?', "Let's Create Something", 'Extraordinary.'], // last line in brand red
+      text: "Whether you're building a brand, launching a campaign or starting your creative journey, let's make it happen.",
+    },
   },
 
   pillars: {
@@ -308,14 +343,32 @@ export const portfolioData = {
     subtitle: 'Creative thinking, professional execution and transparent collaboration from start to finish.',
     tagline: 'One team. Every creative possibility.',
     items: [
-      { icon: 'reels', title: 'Creative Storytelling', text: 'Hooks that capture attention and stories that keep viewers watching.' },
-      { icon: 'camera', title: 'Professional Production', text: 'Planned shoots, professional equipment and polished edits on every project.' },
-      { icon: 'idea', title: 'Innovative Marketing Strategies', text: 'Fresh ideas grounded in your audience, platforms and goals.' },
-      { icon: 'team', title: 'Experienced Creative Team', text: 'Creators, videographers, editors and writers working together under one roof.' },
-      { icon: 'grow', title: 'Result-oriented Campaigns', text: 'Every campaign is planned around outcomes you can measure.' },
-      { icon: 'educate', title: 'Practical Learning Opportunities', text: 'Through Naaa Talks Academy, aspiring creators learn by doing real work.' },
+      { icon: 'quality', title: 'Creative Quality', text: 'High-quality, original and brand-focused content.' },
+      { icon: 'camera', title: 'Professional Production', text: 'End-to-end video production with a creative edge.' },
+      { icon: 'grow', title: 'Strategic Marketing', text: 'Result-driven marketing that drives real growth.' },
+      { icon: 'team', title: 'Experienced Creative Team', text: 'A skilled and passionate team with real industry experience.' },
+      { icon: 'educate', title: 'Practical Learning', text: 'Hands-on training with real-world projects.' },
+      { icon: 'execution', title: 'End-to-End Execution', text: 'From idea to final delivery, we handle it all.' },
     ],
+    // Homepage version of this section.
+    homeTitle: 'We Create Impact.',
+    homeText: 'A complete creative and learning ecosystem for businesses, brands and aspiring creators.',
     cta: { title: 'Ready to create something memorable?', text: "Let's bring your next creative idea to life.", label: 'Work with us', href: '/work-with-us' },
+  },
+
+  // ── Homepage: process & sections ────────────────────────────────────────────
+  home: {
+    process: [
+      { icon: 'discover', title: 'Discover', text: 'Understand the brand, audience and objectives.' },
+      { icon: 'strategize', title: 'Strategize', text: 'Develop creative ideas and a clear execution plan.' },
+      { icon: 'create', title: 'Create', text: 'Produce engaging content and marketing campaigns.' },
+      { icon: 'deliver', title: 'Deliver', text: 'Publish and distribute across the right platforms.' },
+      { icon: 'grow', title: 'Grow', text: 'Measure results, improve performance and build growth.' },
+    ],
+    servicesText: 'Creative, strategic and result-driven solutions for businesses and creators.',
+    workText: 'A showcase of our creative work, brand campaigns and content productions.',
+    academyText: 'Practical, hands-on courses for aspiring creators and marketing professionals.',
+    contactText: "Whether you're building a brand, launching a campaign or starting your creative journey, let's make it happen.",
   },
 
   // ── Portfolio ──────────────────────────────────────────────────────────────
@@ -361,7 +414,17 @@ export const portfolioData = {
     title: ['In their words.', 'Clients and creators.'],
     empty: 'Testimonials are published only with the author’s permission. The first ones are on their way.',
   },
-  defaultClients: [],
+  // Logos supplied by NAAA TALKS for its own clients. Rows published from the admin
+  // replace this list. `plate: 'light'` marks a dark-ink logo that needs a light
+  // backing to stay visible in its original colours.
+  defaultClients: [
+    { id: 'crystal-claws', name: 'Crystal Claws Nail Bar', logo: '/clients/crystal-claws.webp', plate: 'light', permission_confirmed: true, sort_order: 1 },
+    { id: 'yezdi', name: 'Yezdi', logo: '/clients/yezdi.webp', permission_confirmed: true, sort_order: 2 },
+    { id: 'gayatri', name: 'Gayatri Cosmetology Academy', logo: '/clients/gayatri-cosmetology-academy.webp', permission_confirmed: true, sort_order: 3 },
+    { id: 'saara', name: 'Saara', logo: '/clients/saara.webp', permission_confirmed: true, sort_order: 4 },
+    { id: 'varsha', name: 'Varsha Bridal Studio', logo: '/clients/varsha-bridal-studio.webp', permission_confirmed: true, sort_order: 5 },
+    { id: 'lora', name: 'Lora', logo: '/clients/lora.webp', permission_confirmed: true, sort_order: 6 },
+  ],
   defaultTestimonials: [],
 
   // ── Careers ────────────────────────────────────────────────────────────────

@@ -1,35 +1,32 @@
 import { usePageMeta } from '@/hooks/usePageMeta'
 import Hero from '@/components/sections/Hero'
-import AboutAgency from '@/components/sections/AboutAgency'
-import ServicesOverview from '@/components/sections/ServicesOverview'
-import ProductionHighlights from '@/components/sections/ProductionHighlights'
-import FeaturedGallery from '@/components/sections/FeaturedGallery'
-import AcademySection from '@/components/sections/Academy'
-import BrandPromise from '@/components/sections/BrandPromise'
-import Clients from '@/components/sections/Clients'
-import ReelGallery from '@/components/sections/ReelGallery'
-import Testimonials from '@/components/sections/Testimonials'
+import HomeAbout from '@/components/home/HomeAbout'
+import HomeServices from '@/components/home/HomeServices'
+import HomeProcess from '@/components/home/HomeProcess'
+import WorkShowcase from '@/components/home/WorkShowcase'
+import HomeAcademy from '@/components/home/HomeAcademy'
+import HomeWhy from '@/components/home/HomeWhy'
+import { HomeClients, HomeTestimonial } from '@/components/home/HomeProof'
 import FAQ from '@/components/sections/FAQ'
-import ContactSection from '@/components/sections/ContactSection'
+import ContactPanel from '@/components/home/ContactPanel'
 
-// Hero → About → Services → Production → Academy → Why Choose Us → Clients →
-// Portfolio → Testimonials → FAQ → Contact (navbar and footer come from SiteLayout).
+// Hero → About (+ figures) → Services → Process → Work → Academy → Why choose us →
+// Clients → Testimonials → FAQ → Contact (navbar and footer come from SiteLayout).
 export default function HomePage() {
   usePageMeta()
   return (
     <>
       <Hero />
-      <AboutAgency compact />
-      <ServicesOverview />
-      <ProductionHighlights />
-      <FeaturedGallery />
-      <AcademySection />
-      <BrandPromise />
-      <Clients />
-      <ReelGallery limit={8} />
-      <Testimonials />
-      <FAQ />
-      <ContactSection />
+      <HomeAbout />
+      <HomeServices />
+      <HomeProcess />
+      <WorkShowcase />
+      <HomeAcademy />
+      <HomeWhy />
+      <HomeClients />
+      <HomeTestimonial />
+      <FAQ layout="split" />
+      <ContactPanel />
     </>
   )
 }

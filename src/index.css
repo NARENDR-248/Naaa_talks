@@ -58,6 +58,26 @@
     from { transform: translateX(0); }
     to { transform: translateX(-50%); }
   }
+
+  /* Carousel autoplay timer: the bar's animationend advances the slide. */
+  --animate-autoplay-fill: autoplay-fill 4.5s linear forwards;
+  @keyframes autoplay-fill {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+
+  /* Slow drift for floating cards; uses translate/rotate so it composes with scale. */
+  --animate-card-float: card-float 6s ease-in-out infinite;
+  @keyframes card-float {
+    0%, 100% { translate: 0 var(--float-y, 0px); rotate: var(--float-rot, 0deg); }
+    50% { translate: 0 calc(var(--float-y, 0px) - 9px); rotate: calc(var(--float-rot, 0deg) * -1); }
+  }
+
+  /* Light sweep across a card on hover. */
+  @keyframes card-shine {
+    from { transform: translateX(-120%) skewX(-20deg); }
+    to { transform: translateX(220%) skewX(-20deg); }
+  }
 }
 
 @layer base {

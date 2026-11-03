@@ -13,8 +13,9 @@ const { nav, navAll, brand } = portfolioData
 const linkClass = (active) =>
   cn('relative inline-flex items-center py-2 text-[13.5px] font-medium whitespace-nowrap transition-colors duration-200 hover:text-white wide:text-[14px]', active ? 'text-white' : 'text-white/70')
 
-// Thin red underline under the current page.
-const ActiveBar = ({ show }) => show && <span aria-hidden className="absolute inset-x-0 -bottom-0.5 h-[2px] rounded-full bg-signal-500" />
+// Thin red underline under the current page; it glides to the new link on navigation.
+const ActiveBar = ({ show }) =>
+  show && <motion.span layoutId="nav-underline" aria-hidden transition={{ type: 'spring', stiffness: 380, damping: 34 }} className="absolute inset-x-0 -bottom-0.5 h-[2px] rounded-full bg-signal-500" />
 
 // Link + chevron toggle. Opens on hover or click, closes on outside click,
 // Escape, or when focus leaves; arrow keys move through the items.

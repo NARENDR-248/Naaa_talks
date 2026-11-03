@@ -1,14 +1,20 @@
 import { Link } from 'react-router-dom'
 import { Mail, MapPin, Phone } from 'lucide-react'
 import { portfolioData } from '@/data/portfolioData'
-import { useSiteContent, useSocials } from '@/hooks/useSiteContent'
-import { useJourneys } from '@/hooks/useJourneys'
+import { useServicePages, useSiteContent, useSocials } from '@/hooks/useSiteContent'
 import { useWhatsAppLink } from '@/hooks/useWhatsAppLink'
 import { Shell, Wordmark } from '@/components/portfolio/Kit'
 import SocialIcon from '@/components/portfolio/SocialIcon'
 import { WhatsAppIcon } from '@/components/layout/WhatsAppButton'
 
-const { brand, navAll } = portfolioData
+const { brand } = portfolioData
+const ABOUT_LINKS = [
+  { label: 'About Us', href: '/about' },
+  { label: 'Our Team', href: '/content-production#team' },
+  { label: 'Careers', href: '/careers' },
+  { label: 'Portfolio', href: '/portfolio' },
+  { label: 'Our Clients', href: '/clients' },
+]
 // Scales the cropped wordmark so any brand name fits the viewport width.
 const giantSize = `${Math.min(22, 92 / ((brand.wordmark.join('').length + 1) * 0.66)).toFixed(2)}vw`
 
@@ -27,14 +33,15 @@ function Column({ title, links }) {
 
 export default function Footer() {
   const { contact, footer } = useSiteContent().settings
-  const journeys = useJourneys()
+  const servicePages = useServicePages()
+  const { courses } = useSiteContent()
   const socials = useSocials()
   const wa = useWhatsAppLink()({ purpose: 'general' })
 
   return (
     <footer className="relative overflow-hidden border-t border-white/[0.06] section-pt">
       <Shell>
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.5fr_0.8fr_1fr_1fr_1.2fr] lg:gap-8">
           <div>
             <Wordmark />
             <p className="mt-2 font-sans text-[11px] font-semibold tracking-[0.28em] text-signal-400 uppercase">{brand.tagline}</p>
@@ -52,8 +59,9 @@ export default function Footer() {
             )}
           </div>
 
-          <Column title="Explore" links={navAll.slice(1, 7)} />
-          <Column title="Get started" links={[...Object.values(journeys), { label: 'Academy courses', href: '/academy' }, { label: 'Contact Us', href: '/contact' }]} />
+          <Column title="About" links={ABOUT_LINKS} />
+          <Column title="Services" links={[...servicePages.map((s) => ({ label: s.title, href: `/services/${s.slug}` })), { label: 'Content Production', href: '/content-production' }]} />
+          <Column title="Academy" links={[{ label: 'Naaa Talks Academy', href: '/academy' }, ...courses.map((c) => ({ label: c.title, href: `/academy/${c.slug}` })), { label: 'Become an influencer', href: '/influencer-program' }]} />
 
           <div>
             <h2 className="font-sans text-xs font-semibold tracking-[0.2em] text-white/40 uppercase">Contact</h2>

@@ -1,49 +1,21 @@
 import { motion } from 'framer-motion'
-import { ArrowRight, ChartNoAxesColumnIncreasing, Layers, Mail, Play, Users, Video, Zap } from 'lucide-react'
+import { ArrowRight, Camera, ChartNoAxesColumnIncreasing, GraduationCap, Play, Video, Zap } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { useSiteContent, useSocials } from '@/hooks/useSiteContent'
+import { useSiteContent } from '@/hooks/useSiteContent'
 import { useJourneys } from '@/hooks/useJourneys'
-import { useWhatsAppLink } from '@/hooks/useWhatsAppLink'
 import { ease } from '@/lib/motion'
 import { MotionLink } from '@/lib/motionLink'
-import SocialIcon from '@/components/portfolio/SocialIcon'
-import { WhatsAppIcon } from '@/components/layout/WhatsAppButton'
 import { BrushStroke, Scribble } from '@/components/hero/Brush'
 import HeroVisual, { HeroStats } from '@/components/hero/HeroVisual'
 
 const SERVICES = [
-  { icon: Video, label: 'Content Production', href: '/content-production' },
-  { icon: Users, label: 'Influencer Marketing', href: '/services/influencer-marketing' },
-  { icon: ChartNoAxesColumnIncreasing, label: 'Brand Growth', href: '/services' },
-  { icon: Layers, label: 'Creator Programs', href: '/academy' },
+  { icon: Camera, label: 'Content Creation', href: '/content-production' },
+  { icon: ChartNoAxesColumnIncreasing, label: 'Digital Marketing', href: '/services' },
+  { icon: Video, label: 'Video Production', href: '/content-production#work' },
+  { icon: GraduationCap, label: 'Creator Education', href: '/academy' },
 ]
 
 const slideIn = (delay) => ({ initial: { opacity: 0, x: -28 }, animate: { opacity: 1, x: 0 }, transition: { duration: 0.8, delay, ease } })
-
-function ContactBar() {
-  const { contact } = useSiteContent().settings
-  const instagram = useSocials().find((s) => s.platform === 'instagram')
-  const wa = useWhatsAppLink()({ purpose: 'general' })
-  const items = [
-    instagram && { href: instagram.url, label: instagram.handle || 'Instagram', icon: <SocialIcon platform="instagram" className="size-5" />, external: true },
-    contact.email && { href: `mailto:${contact.email}`, label: contact.email, icon: <Mail className="size-5" aria-hidden /> },
-    // On laptop widths WhatsApp shows as its icon only so the bar stays on one line.
-    wa && { href: wa, label: 'WhatsApp', icon: <WhatsAppIcon className="size-5 text-[#25D366]" />, external: true, compact: true },
-  ].filter(Boolean)
-  if (!items.length) return null
-  return (
-    <motion.ul {...slideIn(0.45)} className="mt-5 inline-flex max-w-full flex-wrap items-center gap-y-2 rounded-2xl border border-white/15 bg-black/40 px-2 py-2 backdrop-blur sm:rounded-full sm:px-3 xl:mt-6">
-      {items.map((it, i) => (
-        <li key={it.href} className="flex items-center">
-          {i > 0 && <span aria-hidden className="mx-1 hidden h-7 w-px bg-white/20 sm:block xl:mx-2" />}
-          <a href={it.href} {...(it.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})} className="flex min-w-0 items-center gap-2.5 rounded-full px-3 py-1.5 text-[15px] text-white/90 transition hover:text-white sm:text-base lg:text-[15px] 2xl:text-base">
-            {it.icon}<span className={it.compact ? 'lg:sr-only 2xl:not-sr-only' : 'truncate'}>{it.label}</span>
-          </a>
-        </li>
-      ))}
-    </motion.ul>
-  )
-}
 
 export default function Hero() {
   const { hero, ctas } = useSiteContent().settings
@@ -105,18 +77,17 @@ export default function Hero() {
             </MotionLink>
           </motion.div>
 
-          <motion.ul {...slideIn(0.34)} className="mt-6 grid xl:mt-8 max-w-xl grid-cols-2 gap-3 sm:grid-cols-4">
-            {SERVICES.map(({ icon: Icon, label, href }) => (
-              <li key={href}>
-                <Link to={href} className="group flex h-full flex-col items-center justify-center gap-2 rounded-xl border border-white/12 bg-white/[0.03] px-2 py-4 text-center text-[13px] leading-tight text-white/90 transition hover:border-signal-500/60 hover:bg-signal-500/[0.06] hover:shadow-[0_0_28px_-8px_rgb(255_16_31/0.7)] sm:text-[15px]">
-                  <Icon className="size-7 text-signal-500 transition-transform group-hover:scale-110" aria-hidden />
+          {/* four capabilities: icon over label, split by hairlines */}
+          <motion.ul {...slideIn(0.34)} className="mt-9 grid max-w-xl grid-cols-4 xl:mt-11">
+            {SERVICES.map(({ icon: Icon, label, href }, i) => (
+              <li key={label} className={i ? 'border-l border-white/10' : ''}>
+                <Link to={href} className="group flex flex-col items-center gap-2.5 px-1 text-center text-[11px] leading-tight text-white/75 transition-colors hover:text-white sm:text-[13px]">
+                  <Icon className="size-6 text-signal-500 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:scale-110 sm:size-7" strokeWidth={1.6} aria-hidden />
                   {label}
                 </Link>
               </li>
             ))}
           </motion.ul>
-
-          <ContactBar />
         </div>
 
         <div className="relative">

@@ -178,6 +178,8 @@ export async function adminList(table) {
   }
   const isSubmission = /enquiries|applications/.test(table)
   const { data, error } = await supabase.from(table).select('*').order(isSubmission ? 'created_at' : 'sort_order', { ascending: !isSubmission })
+  // PGRST205 = the table doesn't exist (the database script hasn't been run for it yet).
+  if (error?.code === 'PGRST205') throw new Error(`The “${table}” table isn't set up in Supabase yet. Run supabase/migrations/2026-11-03_academy_and_contact.sql in the Supabase SQL Editor, then reload.`)
   if (error) fail(error, 'Could not load data.')
   return data
 }

@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowUpRight, BriefcaseBusiness, CircleCheck, Clock, Images, Sparkles, UsersRound } from 'lucide-react'
+import { AlertTriangle, ArrowUpRight, BriefcaseBusiness, CircleCheck, Clock, GraduationCap, Images, Mail, Sparkles, UsersRound } from 'lucide-react'
 import { adminList } from '@/services/api'
 import { PENDING_STATUSES, STATUSES, SUBMISSIONS } from '@/services/collections'
 import { useAdminData } from '@/hooks/useAdminData'
@@ -8,12 +8,16 @@ import { formatDateTime, timeAgo } from '@/lib/date'
 import { AdminPage, ErrorBox, Loading, StatusBadge } from '@/components/admin/AdminKit'
 
 const TYPES = Object.entries(SUBMISSIONS)
-const ICONS = { business: BriefcaseBusiness, influencer: Sparkles, jobs: UsersRound }
+const ICONS = { business: BriefcaseBusiness, influencer: Sparkles, jobs: UsersRound, contact: Mail, course: GraduationCap }
 
+// Each inbox loads on its own, so one missing table doesn't take the dashboard down.
 async function loadDashboard() {
-  const lists = await Promise.all([...TYPES.map(([, c]) => adminList(c.table)), adminList('projects')])
-  const subs = Object.fromEntries(TYPES.map(([key], i) => [key, lists[i].filter((r) => !r.archived)]))
-  return { subs, projects: lists[TYPES.length] }
+  const results = await Promise.allSettled([...TYPES.map(([, c]) => adminList(c.table)), adminList('projects')])
+  const ok = (i) => results[i].status === 'fulfilled'
+  if (TYPES.every((_, i) => !ok(i))) throw results[0].reason
+  const subs = Object.fromEntries(TYPES.map(([key], i) => [key, ok(i) ? results[i].value.filter((r) => !r.archived) : []]))
+  const missing = TYPES.flatMap(([, c], i) => (ok(i) ? [] : [{ label: c.label }]))
+  return { subs, missing, projects: ok(TYPES.length) ? results[TYPES.length].value : [] }
 }
 
 function StatCard({ label, value, icon: Icon, to, tone = 'text-signal-400' }) {
@@ -49,7 +53,16 @@ export default function AdminDashboard() {
 
   return (
     <AdminPage title="Dashboard" subtitle="Enquiries, applications and website content at a glance.">
-      <div className="grid grid-cols-2 gap-3 lg:grid-cols-3 xl:grid-cols-6">
+      {data.missing.length > 0 && (
+        <div role="alert" className="mb-6 flex items-start gap-3 rounded-2xl border border-amber-400/30 bg-amber-400/[0.07] p-4 text-sm text-amber-100/90">
+          <AlertTriangle className="mt-0.5 size-4 shrink-0 text-amber-300" aria-hidden />
+          <div>
+            <p className="font-semibold text-amber-200">Not set up yet: {data.missing.map((m) => m.label).join(', ')}</p>
+            <p className="mt-1 text-amber-100/70">These database tables don't exist in Supabase yet, so their counts show as 0. Run <code className="rounded bg-black/30 px-1">supabase/migrations/2026-11-03_academy_and_contact.sql</code> in the Supabase SQL Editor.</p>
+          </div>
+        </div>
+      )}
+      <div className="grid grid-cols-2 gap-3 lg:grid-cols-3 xl:grid-cols-4">
         {TYPES.map(([key, c]) => <StatCard key={key} label={c.label} value={data.subs[key].length} icon={ICONS[key]} to={c.path} />)}
         <StatCard label="Pending" value={pending} icon={Clock} tone="text-amber-300" />
         <StatCard label="Approved" value={approved} icon={CircleCheck} tone="text-emerald-300" />
@@ -59,7 +72,7 @@ export default function AdminDashboard() {
       {/* Status breakdown per inbox */}
       <section className="mt-8 rounded-2xl border border-white/[0.08] bg-white/[0.02] p-5 sm:p-6">
         <h2 className="font-sans text-base font-semibold text-white">Application statistics</h2>
-        <div className="mt-5 grid gap-6 md:grid-cols-3">
+        <div className="mt-5 grid gap-6 md:grid-cols-3 2xl:grid-cols-5">
           {TYPES.map(([key, c]) => {
             const list = data.subs[key]
             return (

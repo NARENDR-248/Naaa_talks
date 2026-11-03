@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { ArrowUpRight, CirclePlay, Heart, Users } from 'lucide-react'
+import { ArrowUpRight, ChartNoAxesColumnIncreasing, CirclePlay, Users } from 'lucide-react'
 import { useSiteContent } from '@/hooks/useSiteContent'
 import { cn } from '@/lib/cn'
 import { ease } from '@/lib/motion'
@@ -10,7 +10,8 @@ import person560 from '@/assets/hero/hero-person-560.webp'
 import person900 from '@/assets/hero/hero-person-900.webp'
 import camera from '@/assets/hero/hero-camera.webp'
 
-const STAT_ICONS = [Users, CirclePlay, Heart]
+// Views, creators trained, growth — in card order.
+const STAT_ICONS = [CirclePlay, Users, ChartNoAxesColumnIncreasing]
 
 // Desktop positions (percent of the visual frame), staggered and tilted like the reference.
 const STAT_SPOTS = ['left-[60%] top-[5%]', 'left-[61.5%] top-[19.5%]', 'left-[65.5%] top-[34%]']
@@ -23,7 +24,7 @@ function StatCard({ icon: Icon, value, label, className, delay }) {
       transition={{ duration: 0.7, delay, ease }}
       className={cn('flex items-center gap-3 rounded-2xl border border-signal-500/45 bg-black/55 px-4 py-3 shadow-[0_0_30px_-6px_rgb(255_16_31/0.45)] backdrop-blur-md lg:gap-4 lg:px-5 lg:py-4', className)}
     >
-      <Icon className="size-7 shrink-0 text-signal-500 lg:size-9" strokeWidth={2.2} aria-hidden fill={Icon === Heart ? 'currentColor' : 'none'} />
+      <Icon className="size-7 shrink-0 text-signal-500 lg:size-9" strokeWidth={2.2} aria-hidden />
       <span className="min-w-0">
         <span className="block font-display text-xl leading-none font-bold text-white lg:text-[clamp(1.4rem,2.1vw,2.1rem)]">{value}</span>
         <span className="mt-1 block text-[11px] leading-tight text-white/85 lg:text-[clamp(0.8rem,1.05vw,1.05rem)]">{label}</span>
