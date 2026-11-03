@@ -353,6 +353,17 @@ export const portfolioData = {
     // Homepage version of this section.
     homeTitle: 'We Create Impact.',
     homeText: 'A complete creative and learning ecosystem for businesses, brands and aspiring creators.',
+    // Homepage scroll orbit: six cards around the headline (images reuse the sample
+    // portfolio thumbnails; replace with real NAAA TALKS posts when available).
+    orbitText: "We don't just create content. We create connections, influence and measurable brand impact.",
+    orbit: [
+      { label: 'Creative Content', icon: 'quality', image: img('1516035069371-29a1b244cc32', 480) },
+      { label: 'Social Media Reach', icon: 'grow', image: img('1529626455594-4ff0802cfb7e', 480) },
+      { label: 'Brand Collaborations', icon: 'team', image: img('1534528741775-53994a69daeb', 480) },
+      { label: 'Quality Production', icon: 'camera', image: img('1502920917128-1aa500764cbd', 480) },
+      { label: 'Smart Strategy', icon: 'educate', image: img('1512941937669-90a1b58e7e9c', 480) },
+      { label: 'Real Impact', icon: 'execution', image: img('1469474968028-56623f02e42e', 480) },
+    ],
     cta: { title: 'Ready to create something memorable?', text: "Let's bring your next creative idea to life.", label: 'Work with us', href: '/work-with-us' },
   },
 
