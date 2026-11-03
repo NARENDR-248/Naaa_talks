@@ -120,7 +120,7 @@ export default function FeaturedGallery() {
   }
 
   return (
-    <section ref={sectionRef} id={featuredWork.id} aria-label="Featured work" className="relative isolate scroll-mt-16 overflow-hidden pt-10 pb-4 sm:pt-14 sm:pb-6">
+    <section ref={sectionRef} id={featuredWork.id} aria-label="Featured work" className="relative isolate scroll-mt-20 overflow-hidden pt-10 pb-4 sm:pt-10 sm:pb-6">
       {/* Ambient red light behind the strip */}
       <div aria-hidden className="pointer-events-none absolute top-[28%] left-1/2 -z-10 h-[34rem] w-[70rem] max-w-[170vw] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgb(170_14_40/0.32),rgb(60_5_16/0.18)_55%,transparent)]" />
 

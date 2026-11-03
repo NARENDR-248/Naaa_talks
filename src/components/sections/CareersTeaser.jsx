@@ -13,7 +13,7 @@ export default function CareersTeaser() {
   const jobs = useSiteContent().jobs.slice(0, 4)
 
   return (
-    <section aria-label={careers.eyebrow} className="relative isolate overflow-hidden py-16 sm:py-24">
+    <section aria-label={careers.eyebrow} className="relative isolate overflow-hidden section-y">
       <div aria-hidden className="pointer-events-none absolute -right-40 bottom-0 -z-10 size-[32rem] rounded-full bg-[radial-gradient(closest-side,rgb(130_10_32/0.3),transparent)]" />
       <Shell className="grid gap-10 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
         <div>

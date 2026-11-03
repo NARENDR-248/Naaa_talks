@@ -1,6 +1,6 @@
 import { WhatsAppCta } from '@/components/layout/WhatsAppButton'
 
-const WHAT = { business: 'a business enquiry', influencer: 'an influencer program application', careers: 'a job application' }
+const WHAT = { business: 'a business enquiry', influencer: 'an influencer program application', careers: 'a job application', contact: 'a contact enquiry', course: 'an admission enquiry' }
 
 // Shown on a form's success screen: the submission reference and an optional
 // "Continue on WhatsApp" button. The pre-filled message only carries the first

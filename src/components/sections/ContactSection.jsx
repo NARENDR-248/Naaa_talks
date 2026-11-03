@@ -6,8 +6,7 @@ import { fadeUp } from '@/lib/motion'
 import { Eyebrow, RevealLine, Shell } from '@/components/portfolio/Kit'
 import SocialIcon from '@/components/portfolio/SocialIcon'
 import { WhatsAppIcon } from '@/components/layout/WhatsAppButton'
-import BusinessEnquiryForm from '@/components/forms/BusinessEnquiryForm'
-import JourneyChooser from './JourneyChooser'
+import ContactForm from '@/components/forms/ContactForm'
 
 // Direct channels (email, WhatsApp, phone, socials) — also used on the Contact and Work With Us pages.
 export function DirectContact() {
@@ -29,25 +28,25 @@ export function DirectContact() {
   )
 }
 
-// Homepage closing section: choose a journey, or send a business enquiry right here.
+// Homepage closing section: the contact form and direct channels.
 export default function ContactSection() {
   return (
-    <section id="contact" aria-label="Contact" className="relative isolate scroll-mt-16 overflow-hidden py-16 sm:py-24">
+    <section id="contact" aria-label="Contact" className="relative isolate scroll-mt-20 overflow-hidden section-y">
       <div aria-hidden className="pointer-events-none absolute top-0 left-1/2 -z-10 h-[30rem] w-[50rem] max-w-[160vw] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgb(150_12_36/0.3),transparent)]" />
       <Shell>
-        <motion.div {...fadeUp(0, 16)}><Eyebrow>Contact & business enquiry</Eyebrow></motion.div>
+        <motion.div {...fadeUp(0, 16)}><Eyebrow>Contact us</Eyebrow></motion.div>
         <h2 className="mt-4 font-display text-[2rem] leading-[1.08] font-light tracking-tight text-white sm:text-5xl">
-          <RevealLine>How can we help you</RevealLine>
-          <RevealLine delay={0.12} className="text-white/45">grow today?</RevealLine>
+          <RevealLine>Let’s Create Something</RevealLine>
+          <RevealLine delay={0.12} className="text-white/45">Great Together.</RevealLine>
         </h2>
 
-        <JourneyChooser className="mt-10" />
+        <motion.p {...fadeUp(0.15, 16)} className="mt-5 max-w-2xl text-[15px] leading-relaxed text-white/60 sm:text-base">Have a business to grow, a creative idea to discuss or want to join our journey? Let’s talk.</motion.p>
 
         <div className="mt-12 grid gap-8 lg:grid-cols-[1.5fr_1fr]">
           <div>
-            <h3 className="font-display text-xl font-medium text-white sm:text-2xl">Send a business enquiry</h3>
-            <p className="mt-1.5 mb-5 text-sm text-white/55">Tell us about your brand and goals — we reply to every enquiry.</p>
-            <BusinessEnquiryForm />
+            <h3 className="font-display text-xl font-medium text-white sm:text-2xl">Send us a message</h3>
+            <p className="mt-1.5 mb-5 text-sm text-white/55">We read and reply to every message.</p>
+            <ContactForm />
           </div>
           <div>
             <h3 className="font-display text-xl font-medium text-white sm:text-2xl">Talk to us directly</h3>

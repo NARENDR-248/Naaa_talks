@@ -4,11 +4,11 @@ import { ArrowUpRight, Briefcase, Check, Clock, MapPin, Plus } from 'lucide-reac
 import { portfolioData } from '@/data/portfolioData'
 import { usePageMeta } from '@/hooks/usePageMeta'
 import { useSiteContent } from '@/hooks/useSiteContent'
-import { REVEAL, ease } from '@/lib/motion'
+import { REVEAL, ease, fadeUp } from '@/lib/motion'
 import { cn } from '@/lib/cn'
 import PageHero from '@/components/layout/PageHero'
 import { Block, Checklist } from '@/components/layout/Blocks'
-import { Cta } from '@/components/portfolio/Kit'
+import { Cta, Shell } from '@/components/portfolio/Kit'
 import CtaBanner from '@/components/portfolio/CtaBanner'
 import { WhatsAppCta } from '@/components/layout/WhatsAppButton'
 
@@ -74,6 +74,15 @@ export default function CareersPage() {
         <Cta href="/careers/apply" variant="outline">General application</Cta>
         <WhatsAppCta purpose="careers" label="Talk to Our Team" />
       </PageHero>
+
+      <Shell>
+        <motion.div {...fadeUp(0.1)} className="flex flex-wrap items-center gap-2.5">
+          <span className="mr-1 text-xs font-semibold tracking-[0.18em] text-white/45 uppercase">Currently hiring</span>
+          {careers.hiring.map((h) => (
+            <span key={h} className="rounded-full border border-signal-500/35 bg-signal-500/[0.07] px-3.5 py-1.5 text-sm text-white/85">{h}</span>
+          ))}
+        </motion.div>
+      </Shell>
 
       <Block id="open-positions" eyebrow="Open positions" title={[`${jobs.length} role${jobs.length === 1 ? '' : 's'}`, 'open right now.']}>
         {jobs.length === 0 ? (

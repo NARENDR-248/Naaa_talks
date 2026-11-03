@@ -49,7 +49,7 @@ function Journey({ compact }) {
 // "as" lets the program page use this heading as its <h1>.
 export default function InfluencerProgram({ compact = false, as: Heading = 'h2' }) {
   return (
-    <section id="influencer-program" aria-label="Zero to Influencer program" className="relative isolate scroll-mt-16 overflow-hidden py-20 sm:py-28">
+    <section id="influencer-program" aria-label="Zero to Influencer program" className="relative isolate scroll-mt-20 overflow-hidden section-y">
       {/* Cinematic backdrop */}
       <div aria-hidden className="absolute inset-0 -z-20">
         <Photo src={BG} alt="" className="absolute inset-0 size-full opacity-35" imgClassName="object-[center_20%]" />

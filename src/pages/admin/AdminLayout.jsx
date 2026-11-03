@@ -2,8 +2,8 @@ import { Suspense, useEffect, useState } from 'react'
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
-  BriefcaseBusiness, ExternalLink, FileText, Images, LayoutDashboard, LoaderCircle, LogOut, Menu, Quote,
-  Settings, ShieldAlert, Sparkles, Building2, UsersRound, Wrench, X,
+  BriefcaseBusiness, ExternalLink, FileText, GraduationCap, Images, LayoutDashboard, LoaderCircle, LogOut, Mail, Menu, Quote,
+  School, Settings, ShieldAlert, Sparkles, Building2, UsersRound, Wrench, X,
 } from 'lucide-react'
 import { DEMO_MODE } from '@/lib/supabase'
 import { adminSignOut, getAdminSession, onAuthChange } from '@/services/api'
@@ -16,7 +16,9 @@ const NAV = [
   {
     group: 'Inbox',
     items: [
+      { to: '/admin/contact-enquiries', label: 'Contact enquiries', icon: Mail },
       { to: '/admin/business-enquiries', label: 'Business enquiries', icon: BriefcaseBusiness },
+      { to: '/admin/course-enquiries', label: 'Course enquiries', icon: GraduationCap },
       { to: '/admin/influencer-applications', label: 'Influencer applications', icon: Sparkles },
       { to: '/admin/job-applications', label: 'Job applications', icon: UsersRound },
     ],
@@ -26,6 +28,7 @@ const NAV = [
     items: [
       { to: '/admin/portfolio', label: 'Portfolio', icon: Images },
       { to: '/admin/services', label: 'Services', icon: Wrench },
+      { to: '/admin/academy', label: 'Academy courses', icon: School },
       { to: '/admin/testimonials', label: 'Testimonials', icon: Quote },
       { to: '/admin/clients', label: 'Clients', icon: Building2 },
       { to: '/admin/content', label: 'FAQs & job openings', icon: FileText },

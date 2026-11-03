@@ -8,7 +8,7 @@ function CtaLink({ href, ...props }) {
   return href?.startsWith('/') ? <MotionLink to={href} {...props} /> : <motion.a href={href} {...props} />
 }
 
-export default function CtaBanner({ title, text, label, href, className = 'mt-14 sm:mt-20' }) {
+export default function CtaBanner({ title, text, label, href, className = 'mt-10 sm:mt-14' }) {
   return (
     <Fade delay={0.1} className={className}>
       <div className="relative isolate overflow-hidden rounded-3xl border border-white/[0.08] bg-gradient-to-br from-wine-900/80 via-[#0c0507] to-void px-6 py-10 sm:px-12 sm:py-14">

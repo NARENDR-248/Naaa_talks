@@ -154,7 +154,7 @@ export default function Process() {
   const nextDelay = useRevealQueue()
 
   return (
-    <section id={process.id} aria-label={process.eyebrow} className="relative isolate scroll-mt-16 overflow-hidden py-20 sm:py-28">
+    <section id={process.id} aria-label={process.eyebrow} className="relative isolate scroll-mt-20 overflow-hidden section-y">
       {/* Ambient burgundy light; the slow breathing loop runs from tablet up only */}
       <div
         aria-hidden

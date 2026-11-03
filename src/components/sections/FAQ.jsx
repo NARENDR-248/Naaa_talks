@@ -92,7 +92,7 @@ export default function FAQ() {
   }
 
   return (
-    <section id="faq" className="scroll-mt-16 py-20 sm:py-28">
+    <section id="faq" className="scroll-mt-20 section-y">
       <Shell className="max-w-3xl">
         <Heading align="center" eyebrow={faqsSection.eyebrow} title={faqsSection.title} />
         <div className="mt-12" aria-live="polite" aria-busy={status === 'loading'}>{body}</div>

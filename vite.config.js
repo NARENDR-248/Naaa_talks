@@ -5,10 +5,15 @@ import { fileURLToPath, URL } from 'node:url'
 import { portfolioData } from './src/data/portfolioData.js'
 
 const escape = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;')
-const { seo, brand, navAll } = portfolioData
+const { seo, brand, navAll, defaultServices, defaultCourses } = portfolioData
 
 // Public routes for the sitemap (admin pages are deliberately excluded).
-const ROUTES = [...navAll.map((n) => n.href), '/work-with-us', '/become-an-influencer', '/careers/apply', '/privacy-policy', '/terms']
+const ROUTES = [
+  ...navAll.map((n) => n.href),
+  ...defaultServices.filter((s) => s.slug).map((s) => `/services/${s.slug}`),
+  ...defaultCourses.map((c) => `/academy/${c.slug}`),
+  '/influencer-program', '/work-with-us', '/become-an-influencer', '/careers/apply', '/privacy-policy', '/terms',
+]
 
 // Injects <title>, description, canonical and Open Graph/Twitter tags from
 // portfolioData, and emits sitemap.xml + robots.txt into the build.

@@ -9,7 +9,9 @@ import HomePage from '@/pages/HomePage'
 const AboutPage = lazy(() => import('@/pages/AboutPage'))
 const ServicesPage = lazy(() => import('@/pages/ServicesPage'))
 const ContentProductionPage = lazy(() => import('@/pages/ContentProductionPage'))
-const InfluencerMarketingPage = lazy(() => import('@/pages/InfluencerMarketingPage'))
+const ServiceDetailPage = lazy(() => import('@/pages/ServiceDetailPage'))
+const AcademyPage = lazy(() => import('@/pages/AcademyPage'))
+const CoursePage = lazy(() => import('@/pages/CoursePage'))
 const InfluencerProgramPage = lazy(() => import('@/pages/InfluencerProgramPage'))
 const PortfolioPage = lazy(() => import('@/pages/PortfolioPage'))
 const ClientsPage = lazy(() => import('@/pages/ClientsPage'))
@@ -40,7 +42,10 @@ export default function App() {
             <Route path="/about" element={<AboutPage />} />
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/content-production" element={<ContentProductionPage />} />
-            <Route path="/influencer-marketing" element={<InfluencerMarketingPage />} />
+            <Route path="/services/:slug" element={<ServiceDetailPage />} />
+            <Route path="/influencer-marketing" element={<Navigate to="/services/influencer-marketing" replace />} />
+            <Route path="/academy" element={<AcademyPage />} />
+            <Route path="/academy/:slug" element={<CoursePage />} />
             <Route path="/influencer-program" element={<InfluencerProgramPage />} />
             <Route path="/portfolio" element={<PortfolioPage />} />
             <Route path="/clients" element={<ClientsPage />} />
@@ -61,8 +66,11 @@ export default function App() {
             <Route path="business-enquiries" element={<AdminInbox key="business" type="business" />} />
             <Route path="influencer-applications" element={<AdminInbox key="influencer" type="influencer" />} />
             <Route path="job-applications" element={<AdminInbox key="jobs" type="jobs" />} />
+            <Route path="contact-enquiries" element={<AdminInbox key="contact" type="contact" />} />
+            <Route path="course-enquiries" element={<AdminInbox key="course" type="course" />} />
             <Route path="portfolio" element={<AdminCollection key="projects" collections={['projects']} title="Portfolio" subtitle="Projects shown in the featured carousel and portfolio gallery." />} />
-            <Route path="services" element={<AdminCollection key="services" collections={['services']} title="Services" subtitle="Services listed under each of the four categories." />} />
+            <Route path="services" element={<AdminCollection key="services" collections={['services']} title="Services" subtitle="Agency services with a slug get their own page; production services appear on Content Production." />} />
+            <Route path="academy" element={<AdminCollection key="courses" collections={['courses']} title="Academy courses" subtitle="Courses on the Academy page — each gets its own page at /academy/slug." />} />
             <Route path="testimonials" element={<AdminCollection key="testimonials" collections={['testimonials']} title="Testimonials" subtitle="Publish only with the author's permission." />} />
             <Route path="clients" element={<AdminCollection key="clients" collections={['clients']} title="Clients" subtitle="Client logos and highlights — publish only with permission." />} />
             <Route path="content" element={<AdminCollection key="content" collections={['faqs', 'jobs']} title="FAQs & job openings" subtitle="Questions shown across the site and positions on the Careers page." />} />

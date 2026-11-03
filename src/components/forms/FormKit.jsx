@@ -1,33 +1,41 @@
 import { useId, useRef } from 'react'
 import { motion } from 'framer-motion'
-import { AlertTriangle, CircleCheck, FileText, LoaderCircle, Upload, X } from 'lucide-react'
+import { AlertTriangle, ArrowRight, ChevronDown, CircleCheck, FileText, LoaderCircle, Upload, X } from 'lucide-react'
 import { cn } from '@/lib/cn'
 
-const control = 'w-full rounded-xl border bg-black/40 px-4 text-[15px] text-white placeholder:text-white/30 outline-none transition focus:border-signal-500/70 focus:ring-4 focus:ring-signal-500/15 disabled:opacity-60'
+const control = 'w-full rounded-xl border bg-[#0b0b0d] px-4 text-[15px] text-white placeholder:text-white/30 outline-none transition-[border-color,box-shadow,background-color] duration-200 hover:border-white/20 focus:border-[#FF1744] focus:bg-[#0e0e10] focus:ring-4 focus:ring-[#FF1744]/15 disabled:opacity-60'
 
 export function Field({ label, error, hint, optional, as = 'input', className, children, ...props }) {
   const id = useId()
   const Comp = as
   const describedBy = [error && `${id}-err`, hint && `${id}-hint`].filter(Boolean).join(' ') || undefined
+  const input = (
+    <Comp
+      id={id}
+      aria-invalid={!!error}
+      aria-describedby={describedBy}
+      className={cn(
+        control,
+        as === 'textarea' ? 'min-h-36 resize-y py-3 leading-relaxed' : 'h-12',
+        error ? 'border-[#FF1744]/70' : 'border-white/10',
+        as === 'select' && 'cursor-pointer appearance-none pr-11 invalid:text-white/35 [&>option]:bg-[#101010] [&>option]:text-white',
+      )}
+      {...props}
+    >
+      {children}
+    </Comp>
+  )
   return (
     <div className={className}>
-      <label htmlFor={id} className="mb-1.5 flex justify-between gap-2 text-xs font-medium text-white/65">
-        {label} {optional && <span className="text-white/30">Optional</span>}
+      <label htmlFor={id} className="mb-2 flex justify-between gap-2 text-[13px] font-medium text-white/80">
+        {label} {optional && <span className="text-xs font-normal text-[#A1A1AA]/70">Optional</span>}
       </label>
-      <Comp
-        id={id}
-        aria-invalid={!!error}
-        aria-describedby={describedBy}
-        className={cn(
-          control,
-          as === 'textarea' ? 'min-h-32 resize-y py-3' : 'h-12',
-          error ? 'border-signal-500/70' : 'border-white/10',
-          as === 'select' && 'appearance-none invalid:text-white/35',
-        )}
-        {...props}
-      >
-        {children}
-      </Comp>
+      {as === 'select' ? (
+        <div className="relative">
+          {input}
+          <ChevronDown aria-hidden className="pointer-events-none absolute top-1/2 right-4 size-4 -translate-y-1/2 text-white/45" />
+        </div>
+      ) : input}
       {hint && !error && <p id={`${id}-hint`} className="mt-1.5 text-xs text-white/40">{hint}</p>}
       {error && <p id={`${id}-err`} className="mt-1.5 text-xs text-signal-400">{error}</p>}
     </div>
@@ -85,16 +93,20 @@ export function Honeypot({ value, onChange }) {
   )
 }
 
+// Disabled while sending, so a double click can't submit twice.
 export function SubmitButton({ loading, children, className }) {
   return (
     <motion.button
       type="submit"
       disabled={loading}
-      whileTap={{ scale: 0.97 }}
-      className={cn('inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-signal-500 text-[13px] font-semibold tracking-[0.16em] text-white uppercase shadow-[0_12px_34px_-10px_rgb(245_32_58/0.85)] transition hover:bg-signal-400 disabled:opacity-60', className)}
+      aria-busy={loading}
+      whileHover={loading ? undefined : { y: -1 }}
+      whileTap={{ scale: 0.98 }}
+      className={cn('group inline-flex h-[52px] w-full items-center justify-center gap-2.5 rounded-xl bg-[#FF1744] text-[13px] font-semibold tracking-[0.12em] text-white uppercase shadow-[0_14px_34px_-12px_rgb(255_23_68/0.85)] transition-[background-color,box-shadow] hover:bg-[#ff2e57] hover:shadow-[0_18px_40px_-12px_rgb(255_23_68/0.95)] disabled:cursor-wait disabled:opacity-70', className)}
     >
-      {loading && <LoaderCircle className="size-4 animate-spin" />}
-      {children}
+      {loading ? <LoaderCircle className="size-4 animate-spin" aria-hidden /> : null}
+      {loading ? 'Sending…' : children}
+      {!loading && <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden />}
     </motion.button>
   )
 }
@@ -121,5 +133,5 @@ export function FormSuccess({ title, children, action }) {
 
 // Card wrapper used by every public form.
 export function FormCard({ children, className }) {
-  return <div className={cn('relative rounded-3xl border border-white/[0.08] bg-white/[0.025] p-5 sm:p-8', className)}>{children}</div>
+  return <div className={cn('relative rounded-[22px] border border-white/10 bg-[#101010] p-5 sm:p-8', className)}>{children}</div>
 }

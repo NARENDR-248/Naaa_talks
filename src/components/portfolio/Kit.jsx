@@ -91,9 +91,9 @@ export function Cta({ href, variant = 'primary', size = 'md', className, childre
 }
 
 export function Wordmark({ className }) {
-  const { wordmark, name } = portfolioData.brand
-  const { logo } = useSiteContent().settings.branding
-  if (logo) return <img src={logo} alt={name} className={cn('h-7 w-auto', className)} />
+  const { wordmark, name, logo: brandLogo } = portfolioData.brand
+  const logo = useSiteContent().settings.branding.logo || brandLogo
+  if (logo) return <img src={logo} alt={name} width="619" height="96" className={cn('h-6 w-auto sm:h-7 2xl:h-8', className)} />
   return (
     <span className={cn('inline-flex items-center font-display text-lg font-extrabold tracking-tight text-white', className)} aria-label={name}>
       {wordmark[0]}

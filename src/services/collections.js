@@ -6,6 +6,9 @@ import { isValidWhatsAppNumber } from '@/lib/whatsapp'
 
 const { projectCategories, serviceCategories } = portfolioData
 
+// Lower-case words joined by hyphens, as used in page addresses.
+const slugError = (v) => (!v || /^[a-z0-9]+(-[a-z0-9]+)*$/.test(v) ? null : 'Use lower-case letters, numbers and hyphens only (e.g. brand-promotion)')
+
 export const COLLECTIONS = {
   projects: {
     table: 'projects',
@@ -40,7 +43,11 @@ export const COLLECTIONS = {
     fields: [
       { name: 'category', label: 'Category', type: 'select', options: serviceCategories.map((c) => c.key), optionLabels: Object.fromEntries(serviceCategories.map((c) => [c.key, c.title])), required: true },
       { name: 'title', label: 'Service name', type: 'text', required: true },
+      { name: 'slug', label: 'Page address (e.g. brand-promotion → /services/brand-promotion). Leave empty for no detail page', type: 'text', validate: slugError },
+      { name: 'summary', label: 'Card summary (one sentence)', type: 'text' },
       { name: 'description', label: 'Description', type: 'textarea' },
+      { name: 'features', label: 'Key features (one per line)', type: 'textarea' },
+      { name: 'benefits', label: 'Benefits (one per line)', type: 'textarea' },
       { name: 'image', label: 'Image (optional)', type: 'image' },
       { name: 'published', label: 'Published', type: 'boolean' },
       { name: 'sort_order', label: 'Sort order', type: 'number' },
@@ -90,8 +97,32 @@ export const COLLECTIONS = {
       { name: 'name', label: 'Client / brand name', type: 'text', required: true },
       { name: 'logo', label: 'Logo', type: 'image' },
       { name: 'website', label: 'Website', type: 'url' },
-      { name: 'highlight', label: 'Project highlight', type: 'textarea' },
+      { name: 'services', label: 'Services delivered (e.g. Reels, Influencer campaign)', type: 'text' },
+      { name: 'highlight', label: 'Project highlight / results', type: 'textarea' },
       { name: 'permission_confirmed', label: 'Permission to display confirmed', type: 'boolean' },
+      { name: 'published', label: 'Published', type: 'boolean' },
+      { name: 'sort_order', label: 'Sort order', type: 'number' },
+    ],
+  },
+  courses: {
+    table: 'courses',
+    label: 'Courses',
+    singular: 'course',
+    titleField: 'title',
+    subtitleField: 'level',
+    fields: [
+      { name: 'title', label: 'Course name', type: 'text', required: true },
+      { name: 'slug', label: 'Page address (e.g. video-editing-course → /academy/video-editing-course)', type: 'text', required: true, validate: slugError },
+      { name: 'tagline', label: 'Tagline (one sentence)', type: 'text' },
+      { name: 'description', label: 'Course introduction', type: 'textarea' },
+      { name: 'thumbnail', label: 'Course thumbnail', type: 'image' },
+      { name: 'level', label: 'Course level (e.g. Beginner)', type: 'text' },
+      { name: 'duration', label: 'Duration (e.g. 8 weeks) — leave empty to show “Shared on enquiry”', type: 'text' },
+      { name: 'syllabus', label: 'Syllabus (one topic per line)', type: 'textarea' },
+      { name: 'modules', label: 'Training modules (one per line, e.g. “Module 1 — Basics”)', type: 'textarea' },
+      { name: 'practical', label: 'Practical sessions (one per line)', type: 'textarea' },
+      { name: 'projects', label: 'Projects (one per line)', type: 'textarea' },
+      { name: 'outcomes', label: 'Learning outcomes (one per line)', type: 'textarea' },
       { name: 'published', label: 'Published', type: 'boolean' },
       { name: 'sort_order', label: 'Sort order', type: 'number' },
     ],
@@ -123,7 +154,7 @@ export const SUBMISSIONS = {
     singular: 'enquiry',
     columns: [['company', 'Business'], ['service', 'Service'], ['budget', 'Budget']],
     search: ['reference', 'name', 'company', 'email', 'phone', 'service', 'message'],
-    filters: [['service', 'Service', portfolioData.forms.serviceOptions]],
+    filters: [['service', 'Service', [...new Set([...portfolioData.forms.serviceOptions, ...portfolioData.forms.productionOptions])]]],
     detail: [['reference', 'Reference'], ['email', 'Email'], ['phone', 'Phone'], ['company', 'Business'], ['service', 'Service needed'], ['budget', 'Budget'], ['timeline', 'Timeline'], ['message', 'Project details']],
   },
   influencer: {
@@ -146,6 +177,26 @@ export const SUBMISSIONS = {
     filters: [['experience', 'Experience', portfolioData.forms.experienceOptions]],
     detail: [['reference', 'Reference'], ['email', 'Email'], ['phone', 'Phone'], ['location', 'Current location'], ['position', 'Position'], ['experience', 'Experience'], ['portfolio_url', 'Portfolio'], ['instagram', 'Instagram'], ['intro', 'Introduction']],
     hasResume: true,
+  },
+  contact: {
+    table: 'contact_enquiries',
+    path: '/admin/contact-enquiries',
+    label: 'Contact enquiries',
+    singular: 'enquiry',
+    columns: [['service', 'Interested in'], ['phone', 'Mobile']],
+    search: ['reference', 'name', 'email', 'phone', 'service', 'message'],
+    filters: [['service', 'Interested in', portfolioData.forms.contactTopics]],
+    detail: [['reference', 'Reference'], ['email', 'Email'], ['phone', 'Mobile'], ['service', 'Interested in'], ['message', 'Message']],
+  },
+  course: {
+    table: 'course_enquiries',
+    path: '/admin/course-enquiries',
+    label: 'Course enquiries',
+    singular: 'enquiry',
+    columns: [['course', 'Course'], ['city', 'City'], ['phone', 'Mobile']],
+    search: ['reference', 'name', 'email', 'phone', 'course', 'city', 'message'],
+    filters: [['course', 'Course', portfolioData.defaultCourses.map((c) => c.title)]],
+    detail: [['reference', 'Reference'], ['email', 'Email'], ['phone', 'Mobile'], ['course', 'Course'], ['city', 'City'], ['message', 'Questions']],
   },
 }
 

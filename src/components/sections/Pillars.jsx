@@ -43,7 +43,7 @@ function PillarCard({ pillar, index }) {
 
 export default function Pillars() {
   return (
-    <section aria-label={pillars.eyebrow} className="relative isolate overflow-hidden py-16 sm:py-24">
+    <section aria-label={pillars.eyebrow} className="relative isolate overflow-hidden section-y">
       <Shell>
         <motion.div {...fadeUp(0, 16)}><Eyebrow className="flex items-center gap-3"><span aria-hidden className="h-px w-6 bg-signal-500" />{pillars.eyebrow}</Eyebrow></motion.div>
         <h2 className="mt-4 font-display text-[2.4rem] leading-[1.02] font-semibold tracking-tight text-white uppercase sm:text-6xl">

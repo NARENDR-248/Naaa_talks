@@ -17,34 +17,42 @@ function validate(v) {
   return e
 }
 
-// Journey 01 — business owners.
-export default function BusinessEnquiryForm({ defaultService = '' }) {
+// Journey 01 — business owners. Every variant saves to business_enquiries;
+// `serviceOptions`, `heading`, `submitLabel` and `note` only change what is shown.
+export default function BusinessEnquiryForm({ defaultService = '', serviceOptions = forms.serviceOptions, heading, intro, submitLabel = 'Send enquiry', note, className }) {
   const f = useGuardedForm({
-    initial: { ...INITIAL, service: forms.serviceOptions.includes(defaultService) ? defaultService : '' },
+    initial: { ...INITIAL, service: serviceOptions.includes(defaultService) ? defaultService : '' },
     validate,
     submit: (v) => submitBusinessEnquiry(Object.fromEntries(Object.entries(v).map(([k, x]) => [k, x.trim() || null]))),
   })
 
   return (
-    <FormCard>
+    <FormCard className={className}>
+      {heading && f.status !== 'sent' && (
+        <div className="mb-7">
+          <h3 className="font-display text-2xl font-medium tracking-tight text-white sm:text-[28px]">{heading}</h3>
+          {intro && <p className="mt-2 text-[15px] leading-relaxed text-[#A1A1AA]">{intro}</p>}
+        </div>
+      )}
       {f.status === 'sent' ? (
         <FormSuccess title="Thank you — enquiry received" action={<button type="button" onClick={f.reset} className="text-sm font-semibold text-white/70 hover:text-white">Send another enquiry</button>}>
           Our team will review your project and get back to you shortly by email{f.values.phone ? ' or phone' : ''}.
           <SubmissionFollowUp purpose="business" reference={f.result?.reference} name={f.values.name} />
         </FormSuccess>
       ) : (
-        <form onSubmit={f.onSubmit} noValidate className="grid gap-4 sm:grid-cols-2">
+        <form onSubmit={f.onSubmit} noValidate className="grid gap-x-4 gap-y-5 sm:grid-cols-2">
           <Honeypot value={f.trap} onChange={f.setTrap} />
           <Field label="Your name" autoComplete="name" value={f.values.name} onChange={f.set('name')} error={f.err('name')} />
           <Field label="Business / brand" optional autoComplete="organization" value={f.values.company} onChange={f.set('company')} />
-          <Field label="Email" type="email" inputMode="email" autoComplete="email" value={f.values.email} onChange={f.set('email')} error={f.err('email')} />
+          <Field label="Email address" type="email" inputMode="email" autoComplete="email" value={f.values.email} onChange={f.set('email')} error={f.err('email')} />
           <Field label="Phone / WhatsApp" optional type="tel" inputMode="tel" autoComplete="tel" value={f.values.phone} onChange={f.set('phone')} error={f.err('phone')} />
-          <SelectField label="What do you need?" options={forms.serviceOptions} value={f.values.service} onChange={f.set('service')} error={f.err('service')} className="sm:col-span-2" />
+          <SelectField label="What do you need?" placeholder="Select a service" options={serviceOptions} value={f.values.service} onChange={f.set('service')} error={f.err('service')} className="sm:col-span-2" />
           <SelectField label="Budget" optional placeholder="Select a range" options={forms.budgetOptions} value={f.values.budget} onChange={f.set('budget')} required={false} />
           <SelectField label="Timeline" optional placeholder="Select a timeline" options={forms.timelineOptions} value={f.values.timeline} onChange={f.set('timeline')} required={false} />
-          <Field as="textarea" label="Project details" className="sm:col-span-2" value={f.values.message} onChange={f.set('message')} error={f.err('message')} placeholder="Your business, goals, the content you have in mind and any references…" />
-          <div className="sm:col-span-2"><FormAlert>{f.error}</FormAlert></div>
-          <SubmitButton loading={f.status === 'sending'} className="sm:col-span-2">Send enquiry</SubmitButton>
+          <Field as="textarea" label="Project details" className="sm:col-span-2" value={f.values.message} onChange={f.set('message')} error={f.err('message')} placeholder="Tell us about your business, project goals, creative ideas, requirements and any references…" />
+          {f.error && <div className="sm:col-span-2"><FormAlert>{f.error}</FormAlert></div>}
+          <SubmitButton loading={f.status === 'sending'} className="sm:col-span-2">{submitLabel}</SubmitButton>
+          {note && <div className="sm:col-span-2">{note}</div>}
         </form>
       )}
     </FormCard>

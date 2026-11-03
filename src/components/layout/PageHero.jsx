@@ -34,7 +34,7 @@ export function Breadcrumbs({ items }) {
 export default function PageHero({ crumbs, eyebrow, title, subtitle, children, className }) {
   const [first, second] = title
   return (
-    <section className={cn('relative isolate overflow-hidden pt-28 pb-12 sm:pt-36 sm:pb-16', className)}>
+    <section className={cn('relative isolate overflow-hidden section-pb pt-28 sm:pt-36', className)}>
       <div aria-hidden className="pointer-events-none absolute -top-48 left-1/2 -z-10 h-[34rem] w-[50rem] max-w-[170vw] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgb(170_14_40/0.38),rgb(60_5_16/0.2)_55%,transparent)]" />
       <Shell>
         <Breadcrumbs items={crumbs} />

@@ -12,7 +12,7 @@ export default function Testimonials() {
   const { testimonials } = useSiteContent()
 
   return (
-    <section aria-label={testimonialsSection.eyebrow} className="relative isolate overflow-hidden py-16 sm:py-24">
+    <section aria-label={testimonialsSection.eyebrow} className="relative isolate overflow-hidden section-y">
       <Shell>
         <motion.div {...fadeUp(0, 16)}><Eyebrow>{testimonialsSection.eyebrow}</Eyebrow></motion.div>
         <h2 className="mt-4 font-display text-[2rem] leading-[1.08] font-light tracking-tight text-white sm:text-5xl">

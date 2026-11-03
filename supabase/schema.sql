@@ -165,12 +165,69 @@ create table if not exists public.job_applications (
   notes text
 );
 
--- Workflow columns shared by the three inboxes (added separately so re-running
+-- ── NAAA TALKS Academy ──────────────────────────────────────────────────────
+-- Multi-line fields (syllabus, modules, ...) hold one item per line.
+create table if not exists public.courses (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  slug text not null unique check (slug ~ '^[a-z0-9]+(-[a-z0-9]+)*$'),
+  title text not null check (char_length(title) <= 160),
+  tagline text check (char_length(tagline) <= 200),
+  description text,
+  thumbnail text,
+  level text check (char_length(level) <= 60),
+  duration text check (char_length(duration) <= 60),
+  syllabus text,
+  modules text,
+  practical text,
+  projects text,
+  outcomes text,
+  published boolean not null default false,
+  sort_order int not null default 0
+);
+
+create table if not exists public.course_enquiries (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  name text not null check (char_length(name) between 2 and 120),
+  email text not null check (email ~* '^[^@\s]+@[^@\s]+\.[^@\s]+$' and char_length(email) <= 200),
+  phone text not null check (char_length(phone) between 7 and 30),
+  course text not null check (char_length(course) <= 160),
+  course_id uuid references public.courses(id) on delete set null,
+  city text check (char_length(city) <= 120),
+  message text check (char_length(message) <= 2000),
+  status text not null default 'new',
+  notes text
+);
+
+-- General "Contact us" form.
+create table if not exists public.contact_enquiries (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  name text not null check (char_length(name) between 2 and 120),
+  email text not null check (email ~* '^[^@\s]+@[^@\s]+\.[^@\s]+$' and char_length(email) <= 200),
+  phone text not null check (char_length(phone) between 7 and 30),
+  service text check (char_length(service) <= 160),
+  message text not null check (char_length(message) between 10 and 3000),
+  status text not null default 'new',
+  notes text
+);
+
+-- Upgrades for tables created by earlier versions of this script.
+alter table public.services add column if not exists slug text;        -- set = has its own detail page
+alter table public.services add column if not exists summary text;     -- one-line card text
+alter table public.services add column if not exists features text;    -- one per line
+alter table public.services add column if not exists benefits text;    -- one per line
+create unique index if not exists services_slug_key on public.services (slug) where slug is not null;
+alter table public.clients add column if not exists services text;     -- services delivered to this client
+alter table public.job_applications alter column intro drop not null;  -- introduction is optional now
+
+-- Workflow columns shared by every inbox (added separately so re-running
 -- this script upgrades tables created by an earlier version).
 do $$
 declare t text;
 begin
-  foreach t in array array['business_enquiries', 'influencer_applications', 'job_applications'] loop
+  foreach t in array array['business_enquiries', 'influencer_applications', 'job_applications', 'course_enquiries', 'contact_enquiries'] loop
     execute format('alter table public.%I add column if not exists archived boolean not null default false', t);
     execute format('alter table public.%I add column if not exists updated_at timestamptz', t);
     execute format('alter table public.%I add column if not exists reference text check (char_length(reference) <= 20)', t);
@@ -191,6 +248,9 @@ alter table public.faqs enable row level security;
 alter table public.business_enquiries enable row level security;
 alter table public.influencer_applications enable row level security;
 alter table public.job_applications enable row level security;
+alter table public.courses enable row level security;
+alter table public.course_enquiries enable row level security;
+alter table public.contact_enquiries enable row level security;
 
 -- Each signed-in user may only see whether they themselves are an admin.
 drop policy if exists "read own admin row" on public.admin_users;
@@ -206,7 +266,7 @@ create policy "admin write settings" on public.site_settings for all to authenti
 do $$
 declare t text;
 begin
-  foreach t in array array['projects', 'services', 'jobs', 'testimonials', 'clients', 'faqs'] loop
+  foreach t in array array['projects', 'services', 'jobs', 'testimonials', 'clients', 'faqs', 'courses'] loop
     execute format('drop policy if exists "public read published" on public.%I', t);
     execute format('create policy "public read published" on public.%I for select using (published = true or public.is_admin())', t);
     execute format('drop policy if exists "admin write" on public.%I', t);
@@ -218,7 +278,7 @@ end $$;
 do $$
 declare t text;
 begin
-  foreach t in array array['business_enquiries', 'influencer_applications', 'job_applications'] loop
+  foreach t in array array['business_enquiries', 'influencer_applications', 'job_applications', 'course_enquiries', 'contact_enquiries'] loop
     execute format('drop policy if exists "public insert" on public.%I', t);
     execute format('create policy "public insert" on public.%I for insert to anon, authenticated with check (status = ''new'' and notes is null and archived = false and updated_at is null)', t);
     execute format('drop policy if exists "admin read" on public.%I', t);
@@ -268,12 +328,13 @@ end $$;
 do $$
 declare t text;
 begin
-  foreach t in array array['projects', 'services', 'jobs', 'testimonials', 'clients', 'faqs'] loop
+  foreach t in array array['projects', 'services', 'jobs', 'testimonials', 'clients', 'faqs', 'courses'] loop
     execute format('alter table public.%I add column if not exists updated_at timestamptz', t);
   end loop;
   -- Update-only, so a fresh public submission still arrives with updated_at null.
-  foreach t in array array['site_settings', 'projects', 'services', 'jobs', 'testimonials', 'clients', 'faqs',
-                           'business_enquiries', 'influencer_applications', 'job_applications'] loop
+  foreach t in array array['site_settings', 'projects', 'services', 'jobs', 'testimonials', 'clients', 'faqs', 'courses',
+                           'business_enquiries', 'influencer_applications', 'job_applications',
+                           'course_enquiries', 'contact_enquiries'] loop
     execute format('drop trigger if exists set_updated_at on public.%I', t);
     execute format('create trigger set_updated_at before update on public.%I for each row execute function public.set_updated_at()', t);
   end loop;
@@ -283,28 +344,36 @@ end $$;
 do $$
 declare t text;
 begin
-  foreach t in array array['projects', 'services', 'jobs', 'testimonials', 'clients', 'faqs'] loop
+  foreach t in array array['projects', 'services', 'jobs', 'testimonials', 'clients', 'faqs', 'courses'] loop
     execute format('create index if not exists %I on public.%I (published, sort_order)', t || '_published_sort_idx', t);
   end loop;
-  foreach t in array array['business_enquiries', 'influencer_applications', 'job_applications'] loop
+  foreach t in array array['business_enquiries', 'influencer_applications', 'job_applications', 'course_enquiries', 'contact_enquiries'] loop
     execute format('create index if not exists %I on public.%I (created_at desc)', t || '_created_idx', t);
     execute format('create index if not exists %I on public.%I (status) where not archived', t || '_status_idx', t);
     execute format('create unique index if not exists %I on public.%I (reference) where reference is not null', t || '_reference_key', t);
   end loop;
 end $$;
 create index if not exists job_applications_job_id_idx on public.job_applications (job_id);
+create index if not exists course_enquiries_course_id_idx on public.course_enquiries (course_id);
 
 -- ── API access (grants) ─────────────────────────────────────────────────────
 -- Newer Supabase projects do not expose new tables to the website API by default.
 -- These grants only make the tables reachable; the RLS policies above still
 -- decide which rows each visitor may read or write.
+-- Supabase grants everything to anon by default; start visitors from nothing.
+revoke all on public.business_enquiries, public.influencer_applications, public.job_applications,
+  public.course_enquiries, public.contact_enquiries from anon;
+revoke insert, update, delete, truncate on public.site_settings, public.projects, public.services, public.jobs,
+  public.testimonials, public.clients, public.faqs, public.courses from anon;
 grant usage on schema public to anon, authenticated;
 grant select on public.site_settings, public.projects, public.services, public.jobs,
-  public.testimonials, public.clients, public.faqs to anon, authenticated;
+  public.testimonials, public.clients, public.faqs, public.courses to anon, authenticated;
 grant insert, update, delete on public.site_settings, public.projects, public.services, public.jobs,
-  public.testimonials, public.clients, public.faqs to authenticated;
-grant insert on public.business_enquiries, public.influencer_applications, public.job_applications to anon, authenticated;
-grant select, update, delete on public.business_enquiries, public.influencer_applications, public.job_applications to authenticated;
+  public.testimonials, public.clients, public.faqs, public.courses to authenticated;
+grant insert on public.business_enquiries, public.influencer_applications, public.job_applications,
+  public.course_enquiries, public.contact_enquiries to anon, authenticated;
+grant select, update, delete on public.business_enquiries, public.influencer_applications, public.job_applications,
+  public.course_enquiries, public.contact_enquiries to authenticated;
 -- admin_users: signed-in users may only check their own row; nobody can make
 -- themselves an admin through the API (add admins in the SQL editor only).
 revoke all on public.admin_users from anon, authenticated;

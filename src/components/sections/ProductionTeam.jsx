@@ -11,7 +11,7 @@ const ICONS = { creators: UsersRound, editors: Scissors, camera: Camera, writers
 // The in-house team and the concept → delivery workflow.
 export default function ProductionTeam({ showCta = true }) {
   return (
-    <section id="team" aria-label={production.eyebrow} className="relative isolate scroll-mt-16 overflow-hidden py-16 sm:py-24">
+    <section id="team" aria-label={production.eyebrow} className="relative isolate scroll-mt-20 overflow-hidden section-y">
       <div aria-hidden className="pointer-events-none absolute top-0 left-1/2 -z-10 h-[30rem] w-[56rem] max-w-[170vw] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgb(130_10_32/0.3),transparent)]" />
       <Shell>
         <div className="grid gap-6 lg:grid-cols-[1.2fr_1fr] lg:items-end lg:gap-16">

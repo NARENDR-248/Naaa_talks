@@ -4,6 +4,7 @@ import PageHero from '@/components/layout/PageHero'
 import { Block } from '@/components/layout/Blocks'
 import JourneyChooser from '@/components/sections/JourneyChooser'
 import { DirectContact } from '@/components/sections/ContactSection'
+import ContactForm from '@/components/forms/ContactForm'
 import FAQ from '@/components/sections/FAQ'
 import { WhatsAppCta } from '@/components/layout/WhatsAppButton'
 
@@ -16,15 +17,22 @@ export default function ContactPage() {
       <PageHero crumbs={[{ label: 'Contact' }]} eyebrow={page.eyebrow} title={page.title} subtitle={page.subtitle}>
         <WhatsAppCta purpose="general" variant="solid" label="Talk to Our Team" />
       </PageHero>
-      <Block className="pt-0 sm:pt-0">
-        <JourneyChooser />
-        <div className="mt-12 grid gap-8 lg:grid-cols-[1fr_1.4fr]">
+      <Block className="pt-3 sm:pt-4">
+        <div className="grid gap-10 lg:grid-cols-[1.5fr_1fr]">
+          <div>
+            <h2 className="font-display text-2xl font-medium text-white">Send us a message</h2>
+            <p className="mt-2 mb-5 text-sm text-white/55">We read and reply to every message.</p>
+            <ContactForm />
+          </div>
           <div>
             <h2 className="font-display text-2xl font-medium text-white">Reach us directly</h2>
-            <p className="mt-2 text-sm text-white/55">Email, WhatsApp or Instagram — whichever is easiest for you.</p>
+            <p className="mt-2 mb-5 text-sm text-white/55">Email, WhatsApp or Instagram — whichever is easiest for you.</p>
+            <DirectContact />
           </div>
-          <DirectContact />
         </div>
+      </Block>
+      <Block eyebrow="Or choose your path" title={['Brand, creator', 'or team member?']}>
+        <JourneyChooser className="mt-8" />
       </Block>
       <FAQ />
     </>

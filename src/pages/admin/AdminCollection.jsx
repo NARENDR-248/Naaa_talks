@@ -9,7 +9,7 @@ import { cn } from '@/lib/cn'
 import { AdminButton, AdminPage, ConfirmDialog, Drawer, EmptyState, ErrorBox, Loading, Notice, SchemaField } from '@/components/admin/AdminKit'
 
 // Collections whose built-in defaults show on the website until real rows exist (FAQs never fall back).
-const HAS_DEFAULTS = { projects: d.defaultProjects, services: d.defaultServices, jobs: d.defaultJobs }
+const HAS_DEFAULTS = { projects: d.defaultProjects, services: d.defaultServices, jobs: d.defaultJobs, courses: d.defaultCourses }
 const PERMISSION_GATED = ['testimonials', 'clients']
 
 function blankRow(config) {
@@ -21,6 +21,8 @@ function validate(key, config, row) {
   for (const f of config.fields) {
     if (f.required && (row[f.name] === '' || row[f.name] == null)) errors[f.name] = 'Required'
     if (f.type === 'url' && row[f.name] && !/^https?:\/\//.test(row[f.name])) errors[f.name] = 'Must start with https://'
+    const msg = row[f.name] ? f.validate?.(row[f.name]) : null
+    if (msg) errors[f.name] = msg
   }
   if (PERMISSION_GATED.includes(key) && row.published && !row.permission_confirmed) {
     errors.permission_confirmed = 'Confirm permission before publishing'

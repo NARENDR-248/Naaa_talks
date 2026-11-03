@@ -32,7 +32,7 @@ export default function Footer() {
   const wa = useWhatsAppLink()({ purpose: 'general' })
 
   return (
-    <footer className="relative overflow-hidden border-t border-white/[0.06] pt-16">
+    <footer className="relative overflow-hidden border-t border-white/[0.06] section-pt">
       <Shell>
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
           <div>
@@ -53,7 +53,7 @@ export default function Footer() {
           </div>
 
           <Column title="Explore" links={navAll.slice(1, 7)} />
-          <Column title="Get started" links={[...Object.values(journeys), { label: 'Our Clients', href: '/clients' }, { label: 'Contact Us', href: '/contact' }]} />
+          <Column title="Get started" links={[...Object.values(journeys), { label: 'Academy courses', href: '/academy' }, { label: 'Contact Us', href: '/contact' }]} />
 
           <div>
             <h2 className="font-sans text-xs font-semibold tracking-[0.2em] text-white/40 uppercase">Contact</h2>

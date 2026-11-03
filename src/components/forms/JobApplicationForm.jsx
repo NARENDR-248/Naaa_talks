@@ -29,11 +29,10 @@ export default function JobApplicationForm({ jobs, defaultJobId }) {
       if (v.name.trim().length < 2) e.name = 'Please enter your full name'
       if (!EMAIL_RE.test(v.email.trim())) e.email = 'Please enter a valid email'
       if (!PHONE_RE.test(v.phone.trim())) e.phone = 'Please enter a valid phone number'
-      if (!v.location.trim()) e.location = 'Please enter your current location'
       if (!v.position) e.position = 'Choose the position you are applying for'
       if (!v.experience) e.experience = 'Choose your experience level'
       if (v.portfolio_url.trim() && !URL_RE.test(v.portfolio_url.trim())) e.portfolio_url = 'Enter a full link starting with https://'
-      if (v.intro.trim().length < 10) e.intro = 'Introduce yourself in a few lines (10+ characters)'
+      if (v.intro.trim() && v.intro.trim().length < 10) e.intro = 'Write a little more, or leave this empty (10+ characters)'
       const r = resumeError(resume)
       if (r) e.resume = r
       return e
@@ -60,15 +59,15 @@ export default function JobApplicationForm({ jobs, defaultJobId }) {
           <Field label="Full name" autoComplete="name" value={f.values.name} onChange={f.set('name')} error={f.err('name')} />
           <Field label="Email" type="email" inputMode="email" autoComplete="email" value={f.values.email} onChange={f.set('email')} error={f.err('email')} />
           <Field label="Phone number" type="tel" inputMode="tel" autoComplete="tel" value={f.values.phone} onChange={f.set('phone')} error={f.err('phone')} />
-          <Field label="Current location" autoComplete="address-level2" value={f.values.location} onChange={f.set('location')} error={f.err('location')} />
+          <Field label="Current location" optional autoComplete="address-level2" value={f.values.location} onChange={f.set('location')} error={f.err('location')} />
           <SelectField label="Position applying for" options={positions} value={f.values.position} onChange={f.set('position')} error={f.err('position')} />
           <SelectField label="Experience" options={forms.experienceOptions} value={f.values.experience} onChange={f.set('experience')} error={f.err('experience')} />
           <Field label="Portfolio link" optional type="url" inputMode="url" value={f.values.portfolio_url} onChange={f.set('portfolio_url')} error={f.err('portfolio_url')} placeholder="https://" />
           <Field label="Instagram profile" optional value={f.values.instagram} onChange={f.set('instagram')} placeholder="@yourname" />
           <FileField label="Resume" className="sm:col-span-2" accept=".pdf,.doc,.docx" file={resume} onFile={setResume} error={f.err('resume')} hint="PDF or Word, up to 5 MB" />
-          <Field as="textarea" label="Short introduction" className="sm:col-span-2" value={f.values.intro} onChange={f.set('intro')} error={f.err('intro')} placeholder="Your skills, tools you use and the work you're proudest of…" />
+          <Field as="textarea" label="Short introduction" optional className="sm:col-span-2" value={f.values.intro} onChange={f.set('intro')} error={f.err('intro')} placeholder="Your skills, tools you use and the work you're proudest of…" />
           <div className="sm:col-span-2"><FormAlert>{f.error}</FormAlert></div>
-          <SubmitButton loading={f.status === 'sending'} className="sm:col-span-2">Submit application</SubmitButton>
+          <SubmitButton loading={f.status === 'sending'} className="sm:col-span-2">Apply Now</SubmitButton>
         </form>
       )}
     </FormCard>

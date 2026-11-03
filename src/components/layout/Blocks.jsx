@@ -7,7 +7,7 @@ import { Eyebrow, RevealLine, Shell } from '@/components/portfolio/Kit'
 // Section wrapper with an optional two-tone heading.
 export function Block({ id, eyebrow, title, intro, children, className }) {
   return (
-    <section id={id} aria-label={eyebrow} className={cn('relative isolate scroll-mt-20 py-14 sm:py-20', className)}>
+    <section id={id} aria-label={eyebrow} className={cn('relative isolate scroll-mt-20 section-y', className)}>
       <Shell>
         {eyebrow && <motion.div {...fadeUp(0, 16)}><Eyebrow>{eyebrow}</Eyebrow></motion.div>}
         {title && (

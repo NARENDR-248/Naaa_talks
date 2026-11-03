@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { ArrowUpRight, X } from 'lucide-react'
+import { ArrowUpRight, ChevronDown, X } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { Wordmark } from './Kit'
 import SocialIcon from './SocialIcon'
@@ -40,6 +40,8 @@ function MenuPanel({ items, journeys, currentPath, socialLinks, brandName, tagli
   const closeRef = useRef(null)
   const panelRef = useRef(null)
   const [active, setActive] = useState(currentPath)
+  // Services / Academy sub-pages: open the group containing the current page.
+  const [expanded, setExpanded] = useState(() => items.find((it) => it.children?.some((c) => c.href === currentPath))?.href ?? null)
 
   useEffect(() => {
     closeRef.current?.focus()
@@ -76,7 +78,7 @@ function MenuPanel({ items, journeys, currentPath, socialLinks, brandName, tagli
       initial="closed"
       animate="open"
       exit="closed"
-      className="fixed inset-0 z-[60] flex flex-col overflow-x-hidden overflow-y-auto overscroll-contain bg-[#050505] lg:hidden"
+      className="fixed inset-0 z-[60] flex flex-col overflow-x-hidden overflow-y-auto overscroll-contain bg-[#050505] nav:hidden"
     >
       {/* Ambient lighting */}
       <motion.div aria-hidden variants={glow} className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -116,15 +118,18 @@ function MenuPanel({ items, journeys, currentPath, socialLinks, brandName, tagli
           <ul>
             {items.map((item, i) => {
               const isActive = active === item.href
+              const subId = `menu-sub-${i}`
+              const isOpen = expanded === item.href
               return (
                 <li key={item.href} className="relative">
+                  <div className="flex items-center gap-2">
                   <motion.a
                     href={item.href}
                     custom={i}
                     variants={link}
                     onClick={(e) => select(e, item.href)}
                     aria-current={isActive ? 'page' : undefined}
-                    className="group flex min-h-14 items-center gap-4"
+                    className="group flex min-h-14 flex-1 items-center gap-4"
                   >
                     <span
                       className={cn(
@@ -159,15 +164,57 @@ function MenuPanel({ items, journeys, currentPath, socialLinks, brandName, tagli
                         )}
                       </span>
                     </span>
-                    <ArrowUpRight
-                      aria-hidden
-                      strokeWidth={1.75}
-                      className={cn(
-                        'size-[18px] shrink-0 transition-[color,translate] duration-300',
-                        isActive ? 'text-[#FF1744]' : 'text-white/25 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-[#FF1744]',
-                      )}
-                    />
+                    {!item.children && (
+                      <ArrowUpRight
+                        aria-hidden
+                        strokeWidth={1.75}
+                        className={cn(
+                          'size-[18px] shrink-0 transition-[color,translate] duration-300',
+                          isActive ? 'text-[#FF1744]' : 'text-white/25 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-[#FF1744]',
+                        )}
+                      />
+                    )}
                   </motion.a>
+                  {item.children && (
+                    <motion.button
+                      type="button"
+                      custom={i}
+                      variants={link}
+                      onClick={() => setExpanded(isOpen ? null : item.href)}
+                      aria-expanded={isOpen}
+                      aria-controls={subId}
+                      aria-label={`${isOpen ? 'Hide' : 'Show'} ${item.label} pages`}
+                      className={cn('grid size-11 shrink-0 place-items-center rounded-full border transition-colors', isOpen ? 'border-[#FF1744]/60 text-[#FF1744]' : 'border-white/10 text-white/60')}
+                    >
+                      <ChevronDown className={cn('size-4 transition-transform duration-300', isOpen && 'rotate-180')} aria-hidden />
+                    </motion.button>
+                  )}
+                  </div>
+                  <AnimatePresence initial={false}>
+                    {item.children && isOpen && (
+                      <motion.ul
+                        id={subId}
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease }}
+                        className="overflow-hidden pl-11"
+                      >
+                        {item.children.map((c) => (
+                          <li key={c.href}>
+                            <a
+                              href={c.href}
+                              onClick={(e) => select(e, c.href)}
+                              aria-current={active === c.href ? 'page' : undefined}
+                              className={cn('flex min-h-11 items-center text-[15px] transition-colors', active === c.href ? 'text-white' : 'text-white/60 hover:text-white')}
+                            >
+                              {c.label}
+                            </a>
+                          </li>
+                        ))}
+                      </motion.ul>
+                    )}
+                  </AnimatePresence>
                   <motion.span aria-hidden variants={rule} custom={i + 1} className="block h-px origin-left bg-white/[0.08]" />
                 </li>
               )

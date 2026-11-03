@@ -12,7 +12,7 @@ export default function Clients({ showHighlights = false }) {
   const { clients } = useSiteContent()
 
   return (
-    <section id="clients" aria-label={clientsSection.eyebrow} className="relative isolate scroll-mt-16 py-16 sm:py-24">
+    <section id="clients" aria-label={clientsSection.eyebrow} className="relative isolate scroll-mt-20 section-y">
       <Shell>
         <motion.div {...fadeUp(0, 16)}><Eyebrow>{clientsSection.eyebrow}</Eyebrow></motion.div>
         <h2 className="mt-4 font-display text-[2rem] leading-[1.08] font-light tracking-tight text-white sm:text-5xl">
@@ -42,7 +42,8 @@ export default function Clients({ showHighlights = false }) {
                         <span className="font-display text-lg font-semibold text-white/70">{c.name}</span>
                       )}
                     </div>
-                    {showHighlights && c.highlight && <p className="mt-3 text-center text-xs leading-relaxed text-white/50">{c.highlight}</p>}
+                    {showHighlights && c.services && <p className="mt-3 text-center text-[11px] font-semibold tracking-[0.12em] text-signal-400 uppercase">{c.services}</p>}
+                    {showHighlights && c.highlight && <p className="mt-2 text-center text-xs leading-relaxed text-white/50">{c.highlight}</p>}
                   </Wrap>
                 </motion.li>
               )

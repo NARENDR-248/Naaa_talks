@@ -13,9 +13,9 @@ import HeroVisual, { HeroStats } from '@/components/hero/HeroVisual'
 
 const SERVICES = [
   { icon: Video, label: 'Content Production', href: '/content-production' },
-  { icon: Users, label: 'Influencer Marketing', href: '/influencer-marketing' },
+  { icon: Users, label: 'Influencer Marketing', href: '/services/influencer-marketing' },
   { icon: ChartNoAxesColumnIncreasing, label: 'Brand Growth', href: '/services' },
-  { icon: Layers, label: 'Creator Programs', href: '/influencer-program' },
+  { icon: Layers, label: 'Creator Programs', href: '/academy' },
 ]
 
 const slideIn = (delay) => ({ initial: { opacity: 0, x: -28 }, animate: { opacity: 1, x: 0 }, transition: { duration: 0.8, delay, ease } })
@@ -51,7 +51,7 @@ export default function Hero() {
   const [line1, line2] = hero.title
 
   return (
-    <section id="top" className="relative isolate overflow-hidden pt-24 pb-12 lg:flex lg:min-h-[100svh] lg:flex-col lg:justify-end lg:pb-0">
+    <section id="top" className="relative isolate overflow-hidden pt-24 pb-7 lg:flex lg:min-h-[100svh] lg:flex-col lg:justify-end lg:pb-0">
       {/* stage lighting: red edges, a slow drifting glow, and a neon arc bottom-left */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(60%_50%_at_0%_100%,rgb(200_10_30/0.45),transparent_70%),radial-gradient(45%_60%_at_100%_40%,rgb(220_14_36/0.4),transparent_70%),radial-gradient(40%_40%_at_10%_0%,rgb(150_8_24/0.35),transparent_70%)]" />
       <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-32 bg-gradient-to-b from-transparent to-ink-950" />

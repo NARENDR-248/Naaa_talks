@@ -11,6 +11,7 @@ const DEFAULTS = {
   testimonials: d.defaultTestimonials,
   clients: d.defaultClients,
   faqs: d.defaultFaqs,
+  courses: d.defaultCourses,
 }
 
 const bySort = (a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0)
@@ -79,8 +80,14 @@ export async function fetchPublishedFaqs() {
 
 // ── Visitor submissions ──────────────────────────────────────────────────────
 
+// Visitors see a friendly message; the technical reason is logged during development.
+function visitorError(error, message) {
+  if (import.meta.env.DEV) console.error('[form] Supabase error:', error)
+  throw new Error(message)
+}
+
 // Short reference shown to the visitor and stored with the submission, e.g. NT-B-4F7K2Q.
-const REF_PREFIX = { business_enquiries: 'B', influencer_applications: 'I', job_applications: 'J' }
+const REF_PREFIX = { business_enquiries: 'B', influencer_applications: 'I', job_applications: 'J', course_enquiries: 'A', contact_enquiries: 'C' }
 function makeReference(table) {
   const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789' // no 0/O/1/I to avoid confusion
   const bytes = crypto.getRandomValues(new Uint8Array(6))
@@ -96,12 +103,14 @@ async function insertSubmission(table, row) {
     return { reference }
   }
   const { error } = await supabase.from(table).insert({ ...row, reference })
-  if (error) fail(error, 'Could not send your form. Please try again.')
+  if (error) visitorError(error, 'We could not send your form just now. Please try again, or reach us by email or WhatsApp.')
   return { reference }
 }
 
 export const submitBusinessEnquiry = (values) => insertSubmission('business_enquiries', values)
 export const submitInfluencerApplication = (values) => insertSubmission('influencer_applications', values)
+export const submitCourseEnquiry = (values) => insertSubmission('course_enquiries', values)
+export const submitContactEnquiry = (values) => insertSubmission('contact_enquiries', values)
 
 export const RESUME_TYPES = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']
 export const RESUME_MAX_BYTES = 5 * 1024 * 1024
@@ -115,7 +124,7 @@ export async function submitJobApplication(values, resume) {
       const safe = resume.name.replace(/[^\w.-]+/g, '_').slice(-80)
       const path = `applications/${crypto.randomUUID()}-${safe}`
       const { error } = await supabase.storage.from('resumes').upload(path, resume, { contentType: resume.type, upsert: false })
-      if (error) fail(error, 'Could not upload your resume.')
+      if (error) visitorError(error, 'We could not upload your resume. Please try again, or email it to us.')
       resume_path = path
     }
   }
@@ -217,7 +226,8 @@ export async function adminDeleteSubmission(table, row) {
 // Copy the built-in default content (e.g. the default job openings) into an
 // empty database table so it can be edited from the admin.
 export async function adminImportDefaults(table) {
-  const rows = (DEFAULTS[table] ?? []).map((r) => Object.fromEntries(Object.entries(r).filter(([k]) => k !== 'id')))
+  // Empty strings become NULL (e.g. services without a page have no slug).
+  const rows = (DEFAULTS[table] ?? []).map((r) => Object.fromEntries(Object.entries(r).filter(([k]) => k !== 'id').map(([k, v]) => [k, v === '' ? null : v])))
   if (!rows.length) return 0
   if (DEMO_MODE) {
     for (const r of rows) await demoStore.insert(table, r)

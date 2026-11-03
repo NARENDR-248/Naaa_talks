@@ -136,7 +136,7 @@ export default function ReelGallery({ limit, as: Tag = 'section' }) {
   }
 
   return (
-    <Tag id={archive.id} aria-label="Portfolio" className="relative isolate scroll-mt-16 overflow-hidden py-14 sm:py-28">
+    <Tag id={archive.id} aria-label="Portfolio" className="relative isolate scroll-mt-20 overflow-hidden section-y">
       <div aria-hidden className="pointer-events-none absolute top-40 -right-40 -z-10 size-[36rem] rounded-full bg-[radial-gradient(closest-side,rgb(120_10_30/0.35),transparent)]" />
       <div aria-hidden className="pointer-events-none absolute bottom-1/4 -left-48 -z-10 size-[32rem] rounded-full bg-[radial-gradient(closest-side,rgb(170_14_40/0.22),transparent)]" />
 

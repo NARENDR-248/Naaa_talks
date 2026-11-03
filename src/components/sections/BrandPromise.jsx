@@ -1,12 +1,12 @@
 import { motion, useReducedMotion } from 'framer-motion'
-import { BadgeIndianRupee, Camera, Clapperboard, ShieldCheck, TrendingUp } from 'lucide-react'
+import { BadgeIndianRupee, Camera, Clapperboard, GraduationCap, Lightbulb, ShieldCheck, TrendingUp, UsersRound } from 'lucide-react'
 import { portfolioData } from '@/data/portfolioData'
 import { Eyebrow, Fade, Shell } from '@/components/portfolio/Kit'
 import CtaBanner from '@/components/portfolio/CtaBanner'
 
 const { whyChoose: promise } = portfolioData
 const ease = [0.22, 1, 0.36, 1]
-const ICONS = { reels: Clapperboard, shield: ShieldCheck, camera: Camera, rupee: BadgeIndianRupee, grow: TrendingUp }
+const ICONS = { reels: Clapperboard, shield: ShieldCheck, camera: Camera, rupee: BadgeIndianRupee, grow: TrendingUp, idea: Lightbulb, team: UsersRound, educate: GraduationCap }
 
 function PromiseCard({ item, index }) {
   const Icon = ICONS[item.icon] ?? Clapperboard
@@ -47,7 +47,7 @@ export default function BrandPromise() {
   const reduce = useReducedMotion()
 
   return (
-    <section aria-label={promise.eyebrow} className="relative isolate overflow-hidden py-14 sm:py-24">
+    <section aria-label={promise.eyebrow} className="relative isolate overflow-hidden section-y">
       {/* Slow burgundy light */}
       <motion.div
         aria-hidden
@@ -90,7 +90,7 @@ export default function BrandPromise() {
           transition={{ duration: 1.1, ease }}
         />
 
-        <ul className="mt-6 grid gap-3 sm:mt-10 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
+        <ul className="mt-6 grid gap-3 sm:mt-10 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
           {promise.items.map((item, i) => (
             <PromiseCard key={item.title} item={item} index={i} />
           ))}

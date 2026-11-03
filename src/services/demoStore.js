@@ -14,9 +14,12 @@ function seed() {
     testimonials: d.defaultTestimonials,
     clients: d.defaultClients,
     faqs: d.defaultFaqs,
+    courses: d.defaultCourses,
     business_enquiries: [],
     influencer_applications: [],
     job_applications: [],
+    course_enquiries: [],
+    contact_enquiries: [],
   }
 }
 
