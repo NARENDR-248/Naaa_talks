@@ -76,7 +76,7 @@ export default function ServiceDetailPage() {
 
       <Block eyebrow="Overview" className="pt-3 sm:pt-4">
         <div className="mt-6 grid gap-8 lg:grid-cols-[auto_1fr] lg:items-start">
-          <motion.span {...fadeUp(0)} className="grid size-16 place-items-center rounded-2xl border border-signal-500/30 bg-signal-500/10 text-[#FF4D6A]">
+          <motion.span {...fadeUp(0)} className="grid size-16 place-items-center rounded-2xl border border-signal-500/30 bg-signal-500/10 text-primary-soft">
             <ServiceIcon service={service} className="size-8" strokeWidth={1.6} />
           </motion.span>
           <motion.p {...fadeUp(0.08)} className="max-w-3xl text-base leading-relaxed text-white/75 sm:text-lg">{service.description}</motion.p>

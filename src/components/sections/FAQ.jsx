@@ -51,7 +51,7 @@ function Item({ faq, index, open, onToggle }) {
         className={cn(
           'group relative overflow-hidden rounded-2xl border transition-[border-color,background-color,box-shadow] duration-500',
           open
-            ? 'border-[#FF1744]/35 bg-[linear-gradient(120deg,rgb(255_23_68/0.09),rgb(255_255_255/0.02)_55%)] shadow-[0_24px_60px_-40px_rgb(255_23_68/0.8)]'
+            ? 'border-primary/35 bg-[linear-gradient(120deg,rgb(255_23_68/0.09),rgb(255_255_255/0.02)_55%)] shadow-[0_24px_60px_-40px_rgb(255_23_68/0.8)]'
             : 'border-white/[0.08] bg-white/[0.015] hover:border-white/20 hover:bg-white/[0.03]',
         )}
       >
@@ -60,7 +60,7 @@ function Item({ faq, index, open, onToggle }) {
           initial={false}
           animate={{ scaleY: open ? 1 : 0 }}
           transition={{ duration: 0.5, ease }}
-          className="absolute top-0 bottom-0 left-0 w-[3px] origin-top bg-gradient-to-b from-[#FF4D6A] to-[#FF1744] shadow-[0_0_14px_rgb(255_23_68/0.9)]"
+          className="absolute top-0 bottom-0 left-0 w-[3px] origin-top bg-gradient-to-b from-primary-soft to-primary shadow-[0_0_14px_rgb(255_23_68/0.9)]"
         />
         <h3>
           <button
@@ -71,7 +71,7 @@ function Item({ faq, index, open, onToggle }) {
             onClick={onToggle}
             className="flex min-h-16 w-full items-center gap-4 px-5 py-4 text-left sm:px-6"
           >
-            <span className={cn('font-display text-sm font-semibold tabular-nums transition-colors duration-500', open ? 'text-[#FF1744]' : 'text-white/30 group-hover:text-white/60')}>
+            <span className={cn('font-display text-sm font-semibold tabular-nums transition-colors duration-500', open ? 'text-primary' : 'text-white/30 group-hover:text-white/60')}>
               {String(index + 1).padStart(2, '0')}
             </span>
             <span className="flex-1 font-sans text-[15px] font-medium text-white transition-transform duration-500 group-hover:translate-x-1">{faq.question}</span>
@@ -80,7 +80,7 @@ function Item({ faq, index, open, onToggle }) {
               transition={{ type: 'spring', stiffness: 260, damping: 18 }}
               className={cn(
                 'grid size-8 shrink-0 place-items-center rounded-full border transition-colors duration-500',
-                open ? 'border-[#FF1744] bg-[#FF1744] text-white shadow-[0_0_20px_-2px_rgb(255_23_68/0.8)]' : 'border-white/15 text-white/60 group-hover:border-white/35 group-hover:text-white',
+                open ? 'border-primary bg-primary text-white shadow-[0_0_20px_-2px_rgb(255_23_68/0.8)]' : 'border-white/15 text-white/60 group-hover:border-white/35 group-hover:text-white',
               )}
             >
               <Plus className="size-4" aria-hidden />
@@ -137,7 +137,7 @@ function AskCard() {
       <p className="font-display text-lg font-semibold text-white">Still have a question?</p>
       <p className="mt-1.5 max-w-xs text-sm leading-relaxed text-[#A1A1AA]">Our team is happy to help — reach out and we&apos;ll get back to you.</p>
       <div className="mt-5 flex flex-wrap gap-2.5">
-        <Link to="/contact" className="group inline-flex h-10 items-center gap-2 rounded-full bg-[#FF1744] px-5 text-[13px] font-semibold text-white shadow-[0_10px_30px_-10px_rgb(255_23_68/0.8)] transition hover:bg-[#ff2e57]">
+        <Link to="/contact" className="group inline-flex h-10 items-center gap-2 rounded-full bg-primary px-5 text-[13px] font-semibold text-white shadow-[0_10px_30px_-10px_rgb(255_23_68/0.8)] transition hover:bg-primary-hover">
           Ask us <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden />
         </Link>
         {wa && (
@@ -178,11 +178,11 @@ export default function FAQ({ layout }) {
   // `split` (homepage): heading and ask card on the left, questions on the right.
   if (layout === 'split') {
     return (
-      <section id="faq" className="relative isolate scroll-mt-20 overflow-x-clip section-y">
+      <section id="faq" aria-labelledby="faq-title" className="relative isolate scroll-mt-20 overflow-x-clip section-y">
         <div aria-hidden className="pointer-events-none absolute top-1/4 -left-48 -z-10 size-[34rem] rounded-full bg-[radial-gradient(closest-side,rgb(140_10_30/0.25),transparent)]" />
         <Shell className="grid gap-8 lg:grid-cols-[1fr_1.25fr] lg:items-start lg:gap-14">
           <div className="lg:sticky lg:top-28">
-            <HomeHeading eyebrow="FAQ" title={['Questions People Ask', 'Before They Start.']} text="Quick answers about our services, collaborations and the academy." />
+            <HomeHeading titleId="faq-title" eyebrow="FAQ" title={['Questions People Ask', 'Before They Start.']} text="Quick answers about our services, collaborations and the academy." />
             <AskCard />
           </div>
           <div aria-live="polite" aria-busy={status === 'loading'}>{body}</div>
@@ -192,9 +192,9 @@ export default function FAQ({ layout }) {
   }
 
   return (
-    <section id="faq" className="scroll-mt-20 section-y">
+    <section id="faq" aria-labelledby="faq-title" className="scroll-mt-20 section-y">
       <Shell className="max-w-3xl">
-        <Heading align="center" eyebrow={faqsSection.eyebrow} title={faqsSection.title} />
+        <Heading titleId="faq-title" align="center" eyebrow={faqsSection.eyebrow} title={faqsSection.title} />
         <div className="mt-12" aria-live="polite" aria-busy={status === 'loading'}>{body}</div>
       </Shell>
     </section>

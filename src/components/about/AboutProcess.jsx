@@ -22,14 +22,14 @@ export default function AboutProcess() {
         <div className="relative mt-12 sm:mt-16">
           {/* track + progress: horizontal on desktop, vertical on smaller screens */}
           <span aria-hidden className="absolute top-5 right-0 left-0 hidden h-px bg-white/10 lg:block" />
-          <motion.span aria-hidden style={{ scaleX: fill }} className="absolute top-5 right-0 left-0 hidden h-px origin-left bg-gradient-to-r from-[#FF1744] to-[#FF1744]/40 lg:block" />
+          <motion.span aria-hidden style={{ scaleX: fill }} className="absolute top-5 right-0 left-0 hidden h-px origin-left bg-gradient-to-r from-primary to-primary/40 lg:block" />
           <span aria-hidden className="absolute top-0 bottom-0 left-5 w-px bg-white/10 lg:hidden" />
-          <motion.span aria-hidden style={{ scaleY: fill }} className="absolute top-0 bottom-0 left-5 w-px origin-top bg-gradient-to-b from-[#FF1744] to-[#FF1744]/40 lg:hidden" />
+          <motion.span aria-hidden style={{ scaleY: fill }} className="absolute top-0 bottom-0 left-5 w-px origin-top bg-gradient-to-b from-primary to-primary/40 lg:hidden" />
 
           <motion.ol {...staggerGroup(0.14)} className="relative grid gap-10 lg:grid-cols-4 lg:gap-8">
             {about.process.map((s, i) => (
               <motion.li key={s.title} variants={cardIn} className="relative flex gap-6 lg:block">
-                <span className="relative z-10 grid size-10 shrink-0 place-items-center rounded-full border border-[#FF1744]/60 bg-[#050505] font-display text-sm text-white shadow-[0_0_28px_-6px_rgb(255_23_68/0.75)]">
+                <span className="relative z-10 grid size-10 shrink-0 place-items-center rounded-full border border-primary/60 bg-[#050505] font-display text-sm text-white shadow-[0_0_28px_-6px_rgb(255_23_68/0.75)]">
                   {String(i + 1).padStart(2, '0')}
                 </span>
                 <div className="pt-1.5 lg:mt-7 lg:pt-0">

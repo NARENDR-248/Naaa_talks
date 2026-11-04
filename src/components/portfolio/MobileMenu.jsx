@@ -134,7 +134,7 @@ function MenuPanel({ items, journeys, currentPath, socialLinks, brandName, tagli
                     <span
                       className={cn(
                         'w-7 shrink-0 font-sans text-[11px] font-semibold tracking-[0.08em] tabular-nums transition-colors duration-300',
-                        isActive ? 'text-[#FF1744]' : 'text-white/35 group-hover:text-[#FF1744]',
+                        isActive ? 'text-primary' : 'text-white/35 group-hover:text-primary',
                       )}
                     >
                       {String(i + 1).padStart(2, '0')}
@@ -144,7 +144,7 @@ function MenuPanel({ items, journeys, currentPath, socialLinks, brandName, tagli
                       <span
                         aria-hidden
                         className={cn(
-                          'absolute top-1/2 -left-3 h-px w-0 -translate-x-full bg-[#FF1744] transition-[width] duration-500 ease-out',
+                          'absolute top-1/2 -left-3 h-px w-0 -translate-x-full bg-primary transition-[width] duration-500 ease-out',
                           isActive ? 'w-2.5' : 'group-hover:w-2.5',
                         )}
                       />
@@ -158,7 +158,7 @@ function MenuPanel({ items, journeys, currentPath, socialLinks, brandName, tagli
                         {isActive && (
                           <motion.span
                             layoutId="menu-indicator"
-                            className="absolute -bottom-1 left-0 h-[2px] w-8 rounded-full bg-[#FF1744] shadow-[0_0_10px_1px_rgb(255_23_68/0.6)]"
+                            className="absolute -bottom-1 left-0 h-[2px] w-8 rounded-full bg-primary shadow-[0_0_10px_1px_rgb(255_23_68/0.6)]"
                             transition={{ type: 'spring', stiffness: 380, damping: 32 }}
                           />
                         )}
@@ -170,7 +170,7 @@ function MenuPanel({ items, journeys, currentPath, socialLinks, brandName, tagli
                         strokeWidth={1.75}
                         className={cn(
                           'size-[18px] shrink-0 transition-[color,translate] duration-300',
-                          isActive ? 'text-[#FF1744]' : 'text-white/25 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-[#FF1744]',
+                          isActive ? 'text-primary' : 'text-white/25 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-primary',
                         )}
                       />
                     )}
@@ -184,7 +184,7 @@ function MenuPanel({ items, journeys, currentPath, socialLinks, brandName, tagli
                       aria-expanded={isOpen}
                       aria-controls={subId}
                       aria-label={`${isOpen ? 'Hide' : 'Show'} ${item.label} pages`}
-                      className={cn('grid size-11 shrink-0 place-items-center rounded-full border transition-colors', isOpen ? 'border-[#FF1744]/60 text-[#FF1744]' : 'border-white/10 text-white/60')}
+                      className={cn('grid size-11 shrink-0 place-items-center rounded-full border transition-colors', isOpen ? 'border-primary/60 text-primary' : 'border-white/10 text-white/60')}
                     >
                       <ChevronDown className={cn('size-4 transition-transform duration-300', isOpen && 'rotate-180')} aria-hidden />
                     </motion.button>
@@ -232,7 +232,7 @@ function MenuPanel({ items, journeys, currentPath, socialLinks, brandName, tagli
                 onClick={(e) => select(e, j.href)}
                 className={cn(
                   'flex h-11 items-center justify-center rounded-full px-3 text-center text-[12px] font-semibold transition active:scale-[0.97]',
-                  i === 0 ? 'bg-signal-500 text-white' : 'border border-white/12 text-white/85 hover:border-[#FF1744]/60',
+                  i === 0 ? 'bg-signal-500 text-white' : 'border border-white/12 text-white/85 hover:border-primary/60',
                 )}
               >
                 {j.label}
@@ -250,7 +250,7 @@ function MenuPanel({ items, journeys, currentPath, socialLinks, brandName, tagli
                     aria-label={`${s.label} (opens in a new tab)`}
                     whileHover={{ scale: 1.08 }}
                     whileTap={{ scale: 0.9 }}
-                    className="grid size-10 place-items-center rounded-full border border-white/10 text-[#B7B3B5] transition-[color,border-color,box-shadow,background-color] duration-300 hover:border-[#FF1744]/70 hover:text-[#FF1744] hover:shadow-[0_0_20px_-6px_rgb(255_23_68/0.8)] active:border-[#FF1744]/70 active:text-[#FF1744]"
+                    className="grid size-10 place-items-center rounded-full border border-white/10 text-[#B7B3B5] transition-[color,border-color,box-shadow,background-color] duration-300 hover:border-primary/70 hover:text-primary hover:shadow-[0_0_20px_-6px_rgb(255_23_68/0.8)] active:border-primary/70 active:text-primary"
                   >
                     <SocialIcon platform={s.platform} className="size-4" />
                   </motion.a>

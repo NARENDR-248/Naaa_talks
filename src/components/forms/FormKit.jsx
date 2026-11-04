@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { AlertTriangle, ArrowRight, Check, ChevronDown, CircleCheck, FileText, LoaderCircle, Upload, X } from 'lucide-react'
 import { cn } from '@/lib/cn'
 
-const control = 'w-full rounded-xl border bg-[#0b0b0d] px-4 text-[15px] text-white placeholder:text-white/30 outline-none transition-[border-color,box-shadow,background-color] duration-200 hover:border-white/20 focus:border-[#FF1744] focus:bg-[#0e0e10] focus:ring-4 focus:ring-[#FF1744]/15 disabled:opacity-60'
+const control = 'w-full rounded-xl border bg-[#0b0b0d] px-4 text-[15px] text-white placeholder:text-white/30 outline-none transition-[border-color,box-shadow,background-color] duration-200 hover:border-white/20 focus:border-primary focus:bg-[#0e0e10] focus:ring-4 focus:ring-primary/15 disabled:opacity-60'
 
 export function Field({ label, error, hint, optional, as = 'input', icon: Icon, className, children, ...props }) {
   const id = useId()
@@ -17,7 +17,7 @@ export function Field({ label, error, hint, optional, as = 'input', icon: Icon, 
       className={cn(
         control,
         as === 'textarea' ? 'min-h-36 resize-y py-3 leading-relaxed' : 'h-12',
-        error ? 'border-[#FF1744]/70' : 'border-white/10',
+        error ? 'border-primary/70' : 'border-white/10',
         as === 'select' && 'cursor-pointer appearance-none pr-11 invalid:text-white/35 [&>option]:bg-[#101010] [&>option]:text-white',
         Icon && 'peer pl-11',
       )}
@@ -34,7 +34,7 @@ export function Field({ label, error, hint, optional, as = 'input', icon: Icon, 
       {as === 'select' || Icon ? (
         <div className="relative">
           {input}
-          {Icon && <Icon aria-hidden className={cn('pointer-events-none absolute left-4 size-[18px] text-white/35 transition-colors peer-focus:text-[#FF1744]', as === 'textarea' ? 'top-3.5' : 'top-1/2 -translate-y-1/2')} />}
+          {Icon && <Icon aria-hidden className={cn('pointer-events-none absolute left-4 size-[18px] text-white/35 transition-colors peer-focus:text-primary', as === 'textarea' ? 'top-3.5' : 'top-1/2 -translate-y-1/2')} />}
           {as === 'select' && <ChevronDown aria-hidden className="pointer-events-none absolute top-1/2 right-4 size-4 -translate-y-1/2 text-white/45" />}
         </div>
       ) : input}
@@ -73,8 +73,8 @@ export function ChipField({ label, options, value, onChange, error, className })
               className={cn(
                 'inline-flex h-8 items-center gap-1.5 rounded-full border px-3 text-xs font-medium sm:h-9 sm:px-3.5 sm:text-[13px] transition-[border-color,background-color,color,box-shadow] duration-300',
                 on
-                  ? 'border-[#FF1744] bg-[#FF1744] text-white shadow-[0_8px_22px_-10px_rgb(255_23_68/0.9)]'
-                  : cn('bg-[#0b0b0d] text-white/70 hover:border-white/30 hover:text-white', error ? 'border-[#FF1744]/50' : 'border-white/10'),
+                  ? 'border-primary bg-primary text-white shadow-[0_8px_22px_-10px_rgb(255_23_68/0.9)]'
+                  : cn('bg-[#0b0b0d] text-white/70 hover:border-white/30 hover:text-white', error ? 'border-primary/50' : 'border-white/10'),
               )}
             >
               {on && <Check className="size-3.5" strokeWidth={3} aria-hidden />}
@@ -139,7 +139,7 @@ export function SubmitButton({ loading, children, className }) {
       aria-busy={loading}
       whileHover={loading ? undefined : { y: -1 }}
       whileTap={{ scale: 0.98 }}
-      className={cn('group inline-flex h-[52px] w-full items-center justify-center gap-2.5 rounded-xl bg-[#FF1744] text-[13px] font-semibold tracking-[0.12em] text-white uppercase shadow-[0_14px_34px_-12px_rgb(255_23_68/0.85)] transition-[background-color,box-shadow] hover:bg-[#ff2e57] hover:shadow-[0_18px_40px_-12px_rgb(255_23_68/0.95)] disabled:cursor-wait disabled:opacity-70', className)}
+      className={cn('group inline-flex h-[52px] w-full items-center justify-center gap-2.5 rounded-xl bg-primary text-[13px] font-semibold tracking-[0.12em] text-white uppercase shadow-[0_14px_34px_-12px_rgb(255_23_68/0.85)] transition-[background-color,box-shadow] hover:bg-primary-hover hover:shadow-[0_18px_40px_-12px_rgb(255_23_68/0.95)] disabled:cursor-wait disabled:opacity-70', className)}
     >
       {loading ? <LoaderCircle className="size-4 animate-spin" aria-hidden /> : null}
       {loading ? 'Sending…' : children}

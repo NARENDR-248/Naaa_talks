@@ -36,7 +36,8 @@ function StatCard({ icon: Icon, value, label, className, delay }) {
 export function HeroStats({ className, floating }) {
   const { heroStats } = useSiteContent().settings
   const items = (heroStats?.items ?? []).filter((s) => s?.value)
-  if (!items.length) return null
+  // Only verified figures are shown: while marked as samples in Admin → Settings, hide them.
+  if (!items.length || heroStats?.isSample) return null
   return (
     <div className={className}>
       <ul className={cn(!floating && 'grid grid-cols-3 gap-2 sm:gap-3')}>
@@ -46,11 +47,6 @@ export function HeroStats({ className, floating }) {
           </li>
         ))}
       </ul>
-      {heroStats.isSample && (
-        <p className={cn('text-[10px] font-semibold tracking-[0.18em] text-white/40 uppercase', floating ? 'absolute top-[49%] left-[70%]' : 'mt-2 text-center')}>
-          {heroStats.sampleNote || 'Sample figures'}
-        </p>
-      )}
     </div>
   )
 }

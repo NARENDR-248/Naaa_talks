@@ -30,7 +30,7 @@ export default function AboutHero() {
             initial={{ scaleY: 0 }}
             animate={{ scaleY: 1 }}
             transition={{ duration: 1.1, delay: 0.4, ease }}
-            className="hidden h-44 w-px origin-top self-end bg-gradient-to-b from-transparent via-[#FF1744]/60 to-transparent lg:block"
+            className="hidden h-44 w-px origin-top self-end bg-gradient-to-b from-transparent via-primary/60 to-transparent lg:block"
           />
 
           <div className="space-y-5 lg:pb-2">
@@ -54,7 +54,7 @@ export default function AboutHero() {
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
           transition={{ duration: 1.2, delay: 0.55, ease }}
-          className="mt-12 h-px origin-left bg-gradient-to-r from-[#FF1744]/60 via-white/10 to-transparent sm:mt-16"
+          className="mt-12 h-px origin-left bg-gradient-to-r from-primary/60 via-white/10 to-transparent sm:mt-16"
         />
       </Shell>
     </section>

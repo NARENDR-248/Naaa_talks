@@ -46,12 +46,12 @@ export function Eyebrow({ children, className }) {
 }
 
 // Two-tone editorial heading: first line white, second line muted.
-export function Heading({ eyebrow, title, subtitle, align = 'left', as: Tag = 'h2', className }) {
+export function Heading({ eyebrow, title, subtitle, align = 'left', as: Tag = 'h2', className, titleId }) {
   const [first, second] = Array.isArray(title) ? title : [title]
   return (
     <Fade className={cn(align === 'center' && 'mx-auto text-center', 'max-w-3xl', className)}>
       {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
-      <Tag className="mt-4 font-display text-[2.1rem] leading-[1.08] font-light tracking-tight text-white sm:text-5xl lg:text-[3.4rem]">
+      <Tag id={titleId} className="mt-4 font-display text-[2.1rem] leading-[1.08] font-light tracking-tight text-white sm:text-5xl lg:text-[3.4rem]">
         {first}
         {second && <><br /><span className="text-white/45">{second}</span></>}
       </Tag>

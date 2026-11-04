@@ -197,7 +197,7 @@ export default function AdminInbox({ type }) {
           {filterOptions.map((o) => <option key={o} value={o}>{o}</option>)}
         </select>
         <label className="flex h-10 items-center gap-2 rounded-xl border border-white/10 px-3 text-sm text-white/70">
-          <input type="checkbox" checked={showArchived} onChange={(e) => { setShowArchived(e.target.checked); setPage(0) }} className="accent-[#FF1744]" /> Archived
+          <input type="checkbox" checked={showArchived} onChange={(e) => { setShowArchived(e.target.checked); setPage(0) }} className="accent-primary" /> Archived
         </label>
       </div>
 

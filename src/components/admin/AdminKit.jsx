@@ -192,7 +192,7 @@ export function SchemaField({ field, value, onChange, error }) {
     return (
       <label className="flex cursor-pointer items-center justify-between gap-4 rounded-xl border border-white/[0.08] bg-white/[0.02] px-3.5 py-3">
         <span className="text-sm text-white/80">{field.label}</span>
-        <input type="checkbox" checked={Boolean(value)} onChange={(e) => onChange(e.target.checked)} className="size-5 accent-[#FF1744]" />
+        <input type="checkbox" checked={Boolean(value)} onChange={(e) => onChange(e.target.checked)} className="size-5 accent-primary" />
       </label>
     )
   }

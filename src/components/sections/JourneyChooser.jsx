@@ -24,7 +24,7 @@ export default function JourneyChooser({ className }) {
               )}
             >
               <div className="flex items-center justify-between">
-                <span className={cn('grid size-11 place-items-center rounded-xl', i === 0 ? 'bg-signal-500 text-white' : 'bg-signal-500/10 text-[#FF4D6A]')}>
+                <span className={cn('grid size-11 place-items-center rounded-xl', i === 0 ? 'bg-signal-500 text-white' : 'bg-signal-500/10 text-primary-soft')}>
                   <Icon className="size-5" strokeWidth={1.75} />
                 </span>
                 <ArrowUpRight className="size-5 text-white/40 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-white" aria-hidden />

@@ -25,7 +25,7 @@ export default function ContactPanel() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={REVEAL}
           transition={{ duration: 0.8, ease }}
-          className="relative isolate overflow-hidden rounded-[26px] border border-[#FF1744]/35 bg-[linear-gradient(160deg,#1a0408_0%,#0b0b0d_40%,#0b0b0d_100%)] p-3 shadow-[0_40px_100px_-60px_rgb(255_23_68/0.7)] sm:rounded-[28px] sm:p-10 lg:p-12"
+          className="relative isolate overflow-hidden rounded-[26px] border border-primary/35 bg-[linear-gradient(160deg,#1a0408_0%,#0b0b0d_40%,#0b0b0d_100%)] p-3 shadow-[0_40px_100px_-60px_rgb(255_23_68/0.7)] sm:rounded-[28px] sm:p-10 lg:p-12"
         >
           <div aria-hidden className="pointer-events-none absolute -top-40 -left-40 -z-10 size-[30rem] rounded-full bg-[radial-gradient(closest-side,rgb(255_23_68/0.25),transparent)]" />
           <div className="grid gap-6 sm:gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
@@ -42,8 +42,8 @@ export default function ContactPanel() {
                 )}
                 {contact.email && (
                   <a href={`mailto:${contact.email}`} className={`${row} min-w-0 flex-col items-start gap-3 border border-white/10 bg-white/[0.03] p-3.5 active:scale-[0.98] sm:flex-row sm:items-center sm:gap-4 sm:border-0 sm:bg-transparent sm:p-0`}>
-                    <span className="grid size-10 shrink-0 place-items-center rounded-full bg-[#FF1744]/15 sm:size-11"><Mail className="size-5 text-[#FF1744]" aria-hidden /></span>
-                    <span className="min-w-0 max-w-full"><span className="block text-xs text-[#A1A1AA]">Email</span><span className="block text-[13px] font-semibold text-white [overflow-wrap:anywhere] group-hover:text-[#FF4D6A] sm:text-sm">{contact.email}</span></span>
+                    <span className="grid size-10 shrink-0 place-items-center rounded-full bg-primary/15 sm:size-11"><Mail className="size-5 text-primary" aria-hidden /></span>
+                    <span className="min-w-0 max-w-full"><span className="block text-xs text-[#A1A1AA]">Email</span><span className="block text-[13px] font-semibold text-white [overflow-wrap:anywhere] group-hover:text-primary-soft sm:text-sm">{contact.email}</span></span>
                   </a>
                 )}
               </div>

@@ -11,7 +11,7 @@ export default function SectionTitle({ eyebrow, lines, tone = 'muted', as = 'h2'
     <div className={className}>
       {eyebrow && (
         <motion.div {...fadeUp(0, 14)}>
-          <Eyebrow className="flex items-center gap-3"><span aria-hidden className="h-px w-8 bg-[#FF1744]" />{eyebrow}</Eyebrow>
+          <Eyebrow className="flex items-center gap-3"><span aria-hidden className="h-px w-8 bg-primary" />{eyebrow}</Eyebrow>
         </motion.div>
       )}
       <Heading {...staggerGroup(0.13, 0.05)} className={cn('mt-5 font-display leading-[1.04] tracking-[-0.03em] text-white', weight, size)}>
@@ -22,7 +22,7 @@ export default function SectionTitle({ eyebrow, lines, tone = 'muted', as = 'h2'
             className={cn(
               'block',
               i > 0 && tone === 'muted' && 'text-white/45',
-              tone === 'accent' && i === lines.length - 1 && 'text-[#FF1744] [text-shadow:0_0_48px_rgb(255_23_68/0.35)]',
+              tone === 'accent' && i === lines.length - 1 && 'text-primary [text-shadow:0_0_48px_rgb(255_23_68/0.35)]',
             )}
           >
             {line}

@@ -18,6 +18,11 @@
   --color-ink-300: #b4b4bd;
   --color-ink-100: #ececf1;
 
+  /* Brand accent: the one red used for buttons, icons, borders and glows. */
+  --color-primary: #FF1744;
+  --color-primary-hover: #ff2e57;
+  --color-primary-soft: #FF4D6A;
+
   --color-brand-300: #ff8fab;
   --color-brand-400: #ff5c86;
   --color-brand-500: #ff2e63;

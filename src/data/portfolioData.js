@@ -353,16 +353,16 @@ export const portfolioData = {
     // Homepage version of this section.
     homeTitle: 'We Create Impact.',
     homeText: 'A complete creative and learning ecosystem for businesses, brands and aspiring creators.',
-    // Homepage scroll orbit: six cards around the headline (images reuse the sample
-    // portfolio thumbnails; replace with real NAAA TALKS posts when available).
+    // Homepage scroll orbit: six cards around the headline. Images reuse the sample
+    // portfolio thumbnails at the same URLs (one download each); replace with real posts.
     orbitText: "We don't just create content. We create connections, influence and measurable brand impact.",
     orbit: [
-      { label: 'Creative Content', icon: 'quality', image: img('1516035069371-29a1b244cc32', 480) },
-      { label: 'Social Media Reach', icon: 'grow', image: img('1529626455594-4ff0802cfb7e', 480) },
-      { label: 'Brand Collaborations', icon: 'team', image: img('1534528741775-53994a69daeb', 480) },
-      { label: 'Quality Production', icon: 'camera', image: img('1502920917128-1aa500764cbd', 480) },
-      { label: 'Smart Strategy', icon: 'educate', image: img('1512941937669-90a1b58e7e9c', 480) },
-      { label: 'Real Impact', icon: 'execution', image: img('1469474968028-56623f02e42e', 480) },
+      { label: 'Creative Content', icon: 'quality', image: img('1516035069371-29a1b244cc32', 1200) },
+      { label: 'Social Media Reach', icon: 'grow', image: img('1529626455594-4ff0802cfb7e') },
+      { label: 'Brand Collaborations', icon: 'team', image: img('1534528741775-53994a69daeb') },
+      { label: 'Quality Production', icon: 'camera', image: img('1502920917128-1aa500764cbd', 1400) },
+      { label: 'Smart Strategy', icon: 'educate', image: img('1512941937669-90a1b58e7e9c') },
+      { label: 'Real Impact', icon: 'execution', image: img('1469474968028-56623f02e42e', 1200) },
     ],
     cta: { title: 'Ready to create something memorable?', text: "Let's bring your next creative idea to life.", label: 'Work with us', href: '/work-with-us' },
   },
@@ -379,6 +379,23 @@ export const portfolioData = {
     servicesText: 'Creative, strategic and result-driven solutions for businesses and creators.',
     workText: 'A showcase of our creative work, brand campaigns and content productions.',
     academyText: 'Practical, hands-on courses for aspiring creators and marketing professionals.',
+    // Homepage Academy flip: three learning stages whose backs form one image.
+    academyFlip: {
+      eyebrow: 'NAAA TALKS Academy',
+      title: 'Where does your creator journey begin?',
+      text: 'Learn the skills, create meaningful content and grow your influence with NAAA TALKS Academy.',
+      stages: [
+        { key: 'learn', title: 'Learn', text: 'Master digital skills, content creation and personal branding.' },
+        { key: 'create', title: 'Create', text: 'Turn your creativity into powerful content and meaningful stories.' },
+        { key: 'grow', title: 'Grow', text: 'Build your audience, establish your brand and unlock new opportunities.' },
+      ],
+      // One shared image across all three card backs (sample photo; swap for a real NAAA TALKS studio shot).
+      image: `${img('1516035069371-29a1b244cc32', 1800)}&h=840`, // cropped to the merged panel's 9:4.2 shape
+      finalEyebrow: 'Three steps. One journey.',
+      finalTitle: 'Learn. Create. Grow.',
+      finalText: 'Your creativity deserves the right direction. NAAA TALKS Academy helps you transform your skills into opportunities.',
+      cta: { label: 'Explore NAAA TALKS Academy', href: '/academy' },
+    },
     contactText: "Whether you're building a brand, launching a campaign or starting your creative journey, let's make it happen.",
   },
 

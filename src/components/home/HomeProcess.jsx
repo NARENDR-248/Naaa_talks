@@ -25,7 +25,7 @@ function Track({ progress, vertical }) {
         className={cn(
           'absolute inset-0 shadow-[0_0_12px_rgb(255_23_68/0.8)]',
           vertical ? 'origin-top bg-gradient-to-b' : 'origin-left bg-gradient-to-r',
-          'from-[#7a0a1a] via-[#FF1744] to-[#FF4D6A]',
+          'from-[#7a0a1a] via-primary to-primary-soft',
         )}
       />
       <motion.span
@@ -52,7 +52,7 @@ function Step({ step, index, on, current }) {
             initial={{ scale: 1, opacity: 0.75 }}
             animate={{ scale: 2.1, opacity: 0 }}
             transition={{ duration: 1.1, ease: 'easeOut' }}
-            className="absolute inset-0 rounded-full border border-[#FF1744]"
+            className="absolute inset-0 rounded-full border border-primary"
           />
         )}
         <motion.span
@@ -70,7 +70,7 @@ function Step({ step, index, on, current }) {
           className={cn(
             'relative grid size-14 place-items-center rounded-full border transition-[border-color,background-color,color,box-shadow] duration-500 group-hover:scale-110',
             on
-              ? 'border-[#FF1744]/70 bg-[radial-gradient(circle_at_50%_35%,rgb(255_23_68/0.22),#0D0D0D_70%)] text-[#FF1744] shadow-[0_0_34px_-4px_rgb(255_23_68/0.75)]'
+              ? 'border-primary/70 bg-[radial-gradient(circle_at_50%_35%,rgb(255_23_68/0.22),#0D0D0D_70%)] text-primary shadow-[0_0_34px_-4px_rgb(255_23_68/0.75)]'
               : 'border-white/12 bg-[#0D0D0D] text-white/35',
           )}
         >
@@ -79,7 +79,7 @@ function Step({ step, index, on, current }) {
       </span>
       <div className="pt-2 lg:pt-0">
         <h3 className={cn('font-display text-base font-semibold transition-colors duration-500 lg:mt-4', on ? 'text-white' : 'text-white/55')}>
-          <span className={cn('mr-1.5 tabular-nums transition-colors duration-500', on ? 'text-[#FF1744]' : 'text-white/30')}>{String(index + 1).padStart(2, '0')}</span>
+          <span className={cn('mr-1.5 tabular-nums transition-colors duration-500', on ? 'text-primary' : 'text-white/30')}>{String(index + 1).padStart(2, '0')}</span>
           {step.title}
         </h3>
         <p className={cn('mt-1.5 text-[13px] leading-relaxed transition-colors duration-500 lg:mx-auto lg:max-w-[12rem]', on ? 'text-[#A1A1AA]' : 'text-[#A1A1AA]/60')}>{step.text}</p>

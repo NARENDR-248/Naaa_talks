@@ -54,9 +54,9 @@ export default function ProjectEnquiry() {
           viewport={REVEAL}
           transition={{ duration: 0.7, ease }}
         >
-          <Eyebrow className="flex items-center gap-3"><span aria-hidden className="h-px w-6 bg-[#FF1744]" />Project enquiry</Eyebrow>
+          <Eyebrow className="flex items-center gap-3"><span aria-hidden className="h-px w-6 bg-primary" />Project enquiry</Eyebrow>
           <h2 className="mt-5 font-display text-[2.4rem] leading-[1.05] font-medium tracking-tight text-white sm:text-5xl xl:text-[3.5rem]">
-            Have a shoot <br className="hidden sm:block" /><span className="text-[#FF1744]">in mind?</span>
+            Have a shoot <br className="hidden sm:block" /><span className="text-primary">in mind?</span>
           </h2>
           <p className="mt-5 max-w-md text-base leading-relaxed text-[#A1A1AA] sm:text-lg">
             Let's turn your ideas into something extraordinary. Tell us about your project, and our creative team will get back to you.
@@ -70,9 +70,9 @@ export default function ProjectEnquiry() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={REVEAL}
                 transition={{ duration: 0.5, delay: 0.15 + i * 0.08, ease }}
-                className="group flex gap-4 rounded-2xl border border-white/[0.06] bg-white/[0.02] p-4 transition hover:border-[#FF1744]/35 hover:bg-white/[0.035]"
+                className="group flex gap-4 rounded-2xl border border-white/[0.06] bg-white/[0.02] p-4 transition hover:border-primary/35 hover:bg-white/[0.035]"
               >
-                <span className="grid size-11 shrink-0 place-items-center rounded-xl border border-[#FF1744]/25 bg-[#FF1744]/10 text-[#FF4D6A] transition-transform duration-300 group-hover:scale-105">
+                <span className="grid size-11 shrink-0 place-items-center rounded-xl border border-primary/25 bg-primary/10 text-primary-soft transition-transform duration-300 group-hover:scale-105">
                   <Icon className="size-5" aria-hidden />
                 </span>
                 <span>

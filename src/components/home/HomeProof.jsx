@@ -9,7 +9,7 @@ import { Shell } from '@/components/portfolio/Kit'
 import HomeHeading from './HomeHeading'
 
 const { clientsSection } = portfolioData
-const roundBtn = 'grid size-10 place-items-center rounded-full border border-white/15 text-white/80 transition hover:border-[#FF1744] hover:text-white'
+const roundBtn = 'grid size-10 place-items-center rounded-full border border-white/15 text-white/80 transition hover:border-primary hover:text-white'
 
 // Shown instead of invented content until real, permission-confirmed entries exist.
 function Pending({ children }) {
@@ -51,10 +51,10 @@ function ClientLogo({ client: c, index, hidden, active }) {
           tabIndex={hidden ? -1 : undefined}
           className={cn(
             'group/logo relative grid h-[5.5rem] w-[9.25rem] place-items-center overflow-hidden rounded-2xl border p-3 backdrop-blur-sm transition-[background-color,border-color,box-shadow,scale] duration-500 sm:h-28 sm:w-48 lg:h-32 lg:w-56',
-            'hover:scale-[1.06] hover:border-[#FF1744]/60 hover:shadow-[0_22px_55px_-22px_rgb(255_23_68/0.8)]',
+            'hover:scale-[1.06] hover:border-primary/60 hover:shadow-[0_22px_55px_-22px_rgb(255_23_68/0.8)]',
             c.plate === 'light' ? 'hover:bg-white' : 'hover:bg-white/[0.06]',
             active
-              ? cn('scale-[1.06] border-[#FF1744]/70 shadow-[0_0_0_1px_rgb(255_23_68/0.25),0_22px_60px_-20px_rgb(255_23_68/0.85)]', plate)
+              ? cn('scale-[1.06] border-primary/70 shadow-[0_0_0_1px_rgb(255_23_68/0.25),0_22px_60px_-20px_rgb(255_23_68/0.85)]', plate)
               : 'border-white/[0.08] bg-[linear-gradient(160deg,rgb(255_255_255/0.05),rgb(255_255_255/0.012))]',
           )}
         >
@@ -115,7 +115,7 @@ export function HomeClients() {
           whileInView={{ scaleX: 1 }}
           viewport={REVEAL}
           transition={{ duration: 0.9, delay: 0.25, ease }}
-          className="mt-5 block h-[2px] w-20 origin-left rounded-full bg-gradient-to-r from-[#FF1744] to-[#FF1744]/0"
+          className="mt-5 block h-[2px] w-20 origin-left rounded-full bg-gradient-to-r from-primary to-primary/0"
         />
       </Shell>
 
@@ -161,12 +161,12 @@ export function HomeTestimonial() {
           <div className="mt-8 grid items-center gap-6 rounded-[22px] border border-white/10 bg-[#101010] p-6 sm:p-8 lg:grid-cols-[1fr_auto_auto] lg:gap-10">
             <AnimatePresence mode="wait">
               <motion.blockquote key={t.id ?? i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.35, ease }} className="flex gap-4">
-                <Quote className="size-10 shrink-0 fill-[#FF1744] text-[#FF1744]" aria-hidden />
+                <Quote className="size-10 shrink-0 fill-primary text-primary" aria-hidden />
                 <p className="text-[15px] leading-relaxed text-white/85 sm:text-base">“{t.quote}”</p>
               </motion.blockquote>
             </AnimatePresence>
             <div className="flex items-center gap-3 border-white/10 lg:border-l lg:pl-10">
-              <span className="grid size-12 shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#FF1744] to-[#7a0a1a] font-display text-base font-semibold text-white">
+              <span className="grid size-12 shrink-0 place-items-center rounded-full bg-gradient-to-br from-primary to-[#7a0a1a] font-display text-base font-semibold text-white">
                 {String(t.name).split(/\s+/).map((w) => w[0]).slice(0, 2).join('')}
               </span>
               <span>

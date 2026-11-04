@@ -25,10 +25,10 @@ export default function AboutCapabilities() {
             return (
               <motion.li key={c.title} variants={cardIn}>
                 <Link to={c.href} className="group relative flex h-full flex-col border-t border-white/10 pt-6 pb-8">
-                  <span aria-hidden className="absolute -top-px left-0 h-px w-full origin-left scale-x-0 bg-[#FF1744] transition-[scale] duration-500 ease-out group-hover:scale-x-100" />
+                  <span aria-hidden className="absolute -top-px left-0 h-px w-full origin-left scale-x-0 bg-primary transition-[scale] duration-500 ease-out group-hover:scale-x-100" />
                   <div className="flex items-center justify-between">
-                    <span className="font-display text-sm text-white/35 tabular-nums transition-colors duration-500 group-hover:text-[#FF1744]">{String(i + 1).padStart(2, '0')}</span>
-                    <Icon className="size-5 text-[#FF1744]/80" strokeWidth={1.6} aria-hidden />
+                    <span className="font-display text-sm text-white/35 tabular-nums transition-colors duration-500 group-hover:text-primary">{String(i + 1).padStart(2, '0')}</span>
+                    <Icon className="size-5 text-primary/80" strokeWidth={1.6} aria-hidden />
                   </div>
                   <h3 className="mt-8 font-display text-2xl font-medium tracking-tight text-white">{c.title}</h3>
                   <p className="mt-2 flex-1 text-[15px] leading-relaxed text-[#A1A1AA]">{c.text}</p>

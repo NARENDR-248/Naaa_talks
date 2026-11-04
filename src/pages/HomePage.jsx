@@ -10,8 +10,8 @@ import { HomeClients, HomeTestimonial } from '@/components/home/HomeProof'
 import FAQ from '@/components/sections/FAQ'
 import ContactPanel from '@/components/home/ContactPanel'
 
-// Hero → About (+ figures) → Services → Process → Work → Academy → Why choose us →
-// Clients → Testimonials → FAQ → Contact (navbar and footer come from SiteLayout).
+// Hero → About (+ figures) → Services → Process → Work → Academy → Clients →
+// Why choose us → Testimonials → FAQ → Contact (navbar and footer come from SiteLayout).
 export default function HomePage() {
   usePageMeta()
   return (
@@ -22,8 +22,8 @@ export default function HomePage() {
       <HomeProcess />
       <WorkShowcase />
       <HomeAcademy />
-      <HomeWhy />
       <HomeClients />
+      <HomeWhy />
       <HomeTestimonial />
       <FAQ layout="split" />
       <ContactPanel />

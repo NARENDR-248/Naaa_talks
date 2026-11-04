@@ -59,7 +59,7 @@ export default function ProductionTeam({ showCta = true }) {
               >
                 <article className="group relative isolate h-full overflow-hidden rounded-2xl border border-white/[0.08] bg-gradient-to-b from-white/[0.045] to-white/[0.01] p-5 transition-[border-color,translate] duration-300 hover:-translate-y-1 hover:border-signal-500/40 sm:p-6">
                   <div aria-hidden className="pointer-events-none absolute -top-20 -right-16 -z-10 size-48 rounded-full bg-[radial-gradient(closest-side,rgb(255_23_68/0.22),transparent)] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                  <span className="grid size-11 place-items-center rounded-xl border border-signal-500/25 bg-signal-500/10 text-[#FF4D6A] transition group-hover:bg-signal-500 group-hover:text-white">
+                  <span className="grid size-11 place-items-center rounded-xl border border-signal-500/25 bg-signal-500/10 text-primary-soft transition group-hover:bg-signal-500 group-hover:text-white">
                     <Icon className="size-5" strokeWidth={1.75} />
                   </span>
                   <h3 className="mt-5 font-sans text-base font-semibold text-white">{member.title}</h3>

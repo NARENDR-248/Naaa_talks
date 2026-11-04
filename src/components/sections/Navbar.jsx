@@ -186,7 +186,7 @@ export default function Navbar() {
             <Cta href="/portfolio" variant="outline" size="sm" className="h-10 border-white/15 px-5 whitespace-nowrap hover:border-white/40">Explore Our Work</Cta>
           </span>
           <span className="hidden sm:block">
-            <Cta href={journeys.business.href} size="sm" className="h-10 bg-[#FF1744] px-5 whitespace-nowrap shadow-[0_8px_30px_-8px_rgb(255_16_31/0.8)]">{journeys.business.label} <ArrowUpRight className="size-4" aria-hidden /></Cta>
+            <Cta href={journeys.business.href} size="sm" className="h-10 bg-primary px-5 whitespace-nowrap shadow-[0_8px_30px_-8px_rgb(255_16_31/0.8)]">{journeys.business.label} <ArrowUpRight className="size-4" aria-hidden /></Cta>
           </span>
           <button
             ref={menuButtonRef}

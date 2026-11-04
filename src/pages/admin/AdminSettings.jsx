@@ -42,7 +42,7 @@ function StatsEditor({ value, onChange }) {
   return (
     <div className="space-y-3">
       <label className="flex items-center gap-3 rounded-xl border border-white/[0.08] px-3 py-3 text-sm text-white/80">
-        <input type="checkbox" checked={Boolean(value.isSample)} onChange={(e) => onChange({ ...value, isSample: e.target.checked })} className="size-5 accent-[#FF1744]" />
+        <input type="checkbox" checked={Boolean(value.isSample)} onChange={(e) => onChange({ ...value, isSample: e.target.checked })} className="size-5 accent-primary" />
         These are placeholder figures (shows a “placeholder” note on the website)
       </label>
       {items.map((it, i) => (

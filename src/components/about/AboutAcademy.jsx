@@ -24,7 +24,7 @@ export default function AboutAcademy() {
           className="relative isolate overflow-hidden rounded-[28px] border border-white/10 bg-[#0D0D0D] p-7 sm:p-10 lg:p-14"
         >
           <div aria-hidden className="pointer-events-none absolute -top-32 -right-24 -z-10 size-[28rem] rounded-full bg-[radial-gradient(closest-side,rgb(255_23_68/0.22),transparent)]" />
-          <div aria-hidden className="pointer-events-none absolute -bottom-40 -left-20 -z-10 size-[24rem] rounded-full border border-[#FF1744]/15" />
+          <div aria-hidden className="pointer-events-none absolute -bottom-40 -left-20 -z-10 size-[24rem] rounded-full border border-primary/15" />
 
           <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:items-center lg:gap-16">
             <div>
@@ -32,7 +32,7 @@ export default function AboutAcademy() {
               <p className="mt-5 max-w-lg text-[15px] leading-relaxed text-[#A1A1AA] sm:text-base">{academyPromo.text}</p>
               <Link
                 to="/academy"
-                className="group mt-8 inline-flex h-12 items-center gap-2.5 rounded-full bg-[#FF1744] px-7 text-sm font-semibold text-white shadow-[0_14px_34px_-12px_rgb(255_23_68/0.85)] transition-[background-color,translate] hover:-translate-y-0.5 hover:bg-[#ff2e57]"
+                className="group mt-8 inline-flex h-12 items-center gap-2.5 rounded-full bg-primary px-7 text-sm font-semibold text-white shadow-[0_14px_34px_-12px_rgb(255_23_68/0.85)] transition-[background-color,translate] hover:-translate-y-0.5 hover:bg-primary-hover"
               >
                 Explore Academy <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden />
               </Link>
@@ -42,14 +42,14 @@ export default function AboutAcademy() {
               {courses.map((c) => (
                 <motion.li key={c.id ?? c.slug} variants={cardIn}>
                   <Link to={`/academy/${c.slug}`} className="group flex items-center gap-4 py-5">
-                    <span className="grid size-11 shrink-0 place-items-center rounded-xl border border-[#FF1744]/25 bg-[#FF1744]/10 text-[#FF4D6A] transition-transform duration-500 group-hover:scale-105">
+                    <span className="grid size-11 shrink-0 place-items-center rounded-xl border border-primary/25 bg-primary/10 text-primary-soft transition-transform duration-500 group-hover:scale-105">
                       <CourseIcon course={c} className="size-5" />
                     </span>
                     <span className="min-w-0 flex-1">
                       <span className="block font-display text-lg font-medium text-white">{c.title}</span>
                       {c.level && <span className="mt-0.5 block text-xs text-[#A1A1AA]">{c.level}</span>}
                     </span>
-                    <ArrowUpRight className="size-5 shrink-0 text-white/30 transition-[translate,color] duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-[#FF1744]" aria-hidden />
+                    <ArrowUpRight className="size-5 shrink-0 text-white/30 transition-[translate,color] duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-primary" aria-hidden />
                   </Link>
                 </motion.li>
               ))}

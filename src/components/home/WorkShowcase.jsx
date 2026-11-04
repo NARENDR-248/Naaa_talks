@@ -25,26 +25,26 @@ function ProjectCard({ project: p, onOpen }) {
         type="button"
         onClick={onOpen}
         aria-label={`Play ${p.title}`}
-        className="group relative block aspect-[16/10] w-full overflow-hidden rounded-[18px] border border-white/10 bg-[#101010] text-left transition-[border-color,box-shadow,translate] duration-500 hover:-translate-y-1 hover:border-[#FF1744]/50 hover:shadow-[0_30px_60px_-30px_rgb(255_23_68/0.6)]"
+        className="group relative block aspect-[16/10] w-full overflow-hidden rounded-[18px] border border-white/10 bg-[#101010] text-left transition-[border-color,box-shadow,translate] duration-500 hover:-translate-y-1 hover:border-primary/50 hover:shadow-[0_30px_60px_-30px_rgb(255_23_68/0.6)]"
       >
         {p.thumbnail && <img src={p.thumbnail} alt="" loading="lazy" className="size-full object-cover transition-[scale,filter] duration-[1.2s] ease-out group-hover:scale-[1.08] group-hover:saturate-125" />}
         <span aria-hidden className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-black/10 transition-opacity duration-500 group-hover:opacity-80" />
         {/* Light sweep on hover */}
         <span aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-1/3 -translate-x-[120%] bg-gradient-to-r from-transparent via-white/15 to-transparent group-hover:animate-[card-shine_1s_ease-out]" />
 
-        <span className="absolute top-3 left-3 rounded-full bg-[#FF1744] px-2.5 py-1 text-[10px] font-semibold text-white transition-transform duration-500 group-hover:-translate-y-0.5">{p.category}</span>
+        <span className="absolute top-3 left-3 rounded-full bg-primary px-2.5 py-1 text-[10px] font-semibold text-white transition-transform duration-500 group-hover:-translate-y-0.5">{p.category}</span>
         {p.is_sample && <span className="absolute top-3 right-3 rounded-full bg-black/70 px-2 py-1 text-[9px] font-semibold tracking-[0.14em] text-white/80 uppercase backdrop-blur-sm">Sample</span>}
 
         <span aria-hidden className="absolute top-1/2 left-1/2 grid size-12 -translate-x-1/2 -translate-y-1/2 place-items-center">
-          <span className="absolute inset-0 animate-pulse-ring rounded-full bg-[#FF1744]/60 motion-reduce:hidden" />
-          <span className="relative grid size-12 place-items-center rounded-full bg-[#FF1744] text-white shadow-[0_0_30px_rgb(255_23_68/0.6)] transition-transform duration-500 group-hover:scale-[1.18]">
+          <span className="absolute inset-0 animate-pulse-ring rounded-full bg-primary/60 motion-reduce:hidden" />
+          <span className="relative grid size-12 place-items-center rounded-full bg-primary text-white shadow-[0_0_30px_rgb(255_23_68/0.6)] transition-transform duration-500 group-hover:scale-[1.18]">
             <Play className="ml-0.5 size-5 fill-current" />
           </span>
         </span>
 
         <span className="absolute right-3 bottom-3 left-4 flex items-end justify-between gap-3">
           <span className="font-display text-[15px] font-semibold text-white transition-transform duration-500 group-hover:-translate-y-1">{p.title}</span>
-          <span aria-hidden className="grid size-8 shrink-0 place-items-center rounded-full border border-white/25 text-white/80 transition duration-500 group-hover:rotate-45 group-hover:border-[#FF1744] group-hover:bg-[#FF1744] group-hover:text-white">
+          <span aria-hidden className="grid size-8 shrink-0 place-items-center rounded-full border border-white/25 text-white/80 transition duration-500 group-hover:rotate-45 group-hover:border-primary group-hover:bg-primary group-hover:text-white">
             <ArrowUpRight className="size-4" />
           </span>
         </span>
@@ -134,7 +134,7 @@ export default function WorkShowcase() {
                         key={`${current}-${autoplay}`}
                         onAnimationEnd={() => goTo(current + 1)}
                         style={{ animationPlayState: paused ? 'paused' : 'running' }}
-                        className={cn('absolute inset-0 origin-left rounded-full bg-[#FF1744]', autoplay && 'animate-autoplay-fill')}
+                        className={cn('absolute inset-0 origin-left rounded-full bg-primary', autoplay && 'animate-autoplay-fill')}
                       />
                     )}
                   </button>
@@ -146,12 +146,12 @@ export default function WorkShowcase() {
             </div>
             <div className="flex gap-2">
               {!reduce && stops > 1 && (
-                <button type="button" onClick={() => setStopped((s) => !s)} aria-label={stopped ? 'Play slideshow' : 'Pause slideshow'} className="grid size-10 place-items-center rounded-full border border-white/15 text-white/80 transition hover:border-[#FF1744] hover:text-white">
+                <button type="button" onClick={() => setStopped((s) => !s)} aria-label={stopped ? 'Play slideshow' : 'Pause slideshow'} className="grid size-10 place-items-center rounded-full border border-white/15 text-white/80 transition hover:border-primary hover:text-white">
                   {stopped ? <Play className="ml-0.5 size-4" aria-hidden /> : <Pause className="size-4" aria-hidden />}
                 </button>
               )}
               {[[ArrowLeft, -1, 'Previous'], [ArrowRight, 1, 'Next']].map(([Icon, d, label]) => (
-                <motion.button key={label} type="button" whileTap={{ scale: 0.9 }} onClick={() => goTo(current + d)} aria-label={`${label} projects`} className="grid size-10 place-items-center rounded-full border border-white/15 text-white/80 transition hover:border-[#FF1744] hover:bg-[#FF1744] hover:text-white">
+                <motion.button key={label} type="button" whileTap={{ scale: 0.9 }} onClick={() => goTo(current + d)} aria-label={`${label} projects`} className="grid size-10 place-items-center rounded-full border border-white/15 text-white/80 transition hover:border-primary hover:bg-primary hover:text-white">
                   <Icon className="size-4" aria-hidden />
                 </motion.button>
               ))}

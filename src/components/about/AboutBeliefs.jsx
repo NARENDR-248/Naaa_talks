@@ -23,7 +23,7 @@ export default function AboutBeliefs() {
                 {/* divider: horizontal on small screens, vertical on desktop */}
                 <motion.span aria-hidden variants={drawLine} className="absolute inset-x-0 top-0 h-px origin-left bg-white/10 lg:hidden" />
                 {i > 0 && <motion.span aria-hidden variants={drawDown} className="absolute inset-y-0 left-0 hidden w-px origin-top bg-gradient-to-b from-white/15 via-white/10 to-transparent lg:block" />}
-                <Icon className="size-6 text-[#FF1744] transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:scale-110" strokeWidth={1.6} aria-hidden />
+                <Icon className="size-6 text-primary transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:scale-110" strokeWidth={1.6} aria-hidden />
                 <h3 className="mt-5 font-display text-xl font-medium text-white">{v.title}</h3>
                 <p className="mt-2 max-w-xs text-[15px] leading-relaxed text-[#A1A1AA]">{v.text}</p>
               </motion.li>

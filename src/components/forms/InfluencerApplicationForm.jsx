@@ -56,7 +56,7 @@ export default function InfluencerApplicationForm() {
           <Field label="Availability" optional className="sm:col-span-2" value={f.values.availability} onChange={f.set('availability')} placeholder="e.g. weekends, evenings, full-time" />
           <Field as="textarea" label="Why do you want to become a content creator?" className="sm:col-span-2" value={f.values.motivation} onChange={f.set('motivation')} error={f.err('motivation')} placeholder="Your interests, your story and what you'd like to achieve…" />
           <label className="flex items-start gap-3 text-sm text-white/65 sm:col-span-2">
-            <input type="checkbox" checked={f.values.consent} onChange={(e) => f.set('consent')(e.target.checked)} aria-invalid={!!f.err('consent')} className="mt-0.5 size-4 shrink-0 accent-[#FF1744]" />
+            <input type="checkbox" checked={f.values.consent} onChange={(e) => f.set('consent')(e.target.checked)} aria-invalid={!!f.err('consent')} className="mt-0.5 size-4 shrink-0 accent-primary" />
             <span>I agree to be contacted by NAAA TALKS about my application, and I have read the <Link to="/privacy-policy" className="underline hover:text-white">privacy policy</Link>. If I am under 18, a parent or guardian knows I am applying.</span>
           </label>
           {f.err('consent') && <p className="-mt-2 text-xs text-signal-400 sm:col-span-2">{f.err('consent')}</p>}

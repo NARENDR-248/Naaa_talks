@@ -24,7 +24,7 @@ export function ServiceCard({ service, index = 0 }) {
       {service.image && <img src={service.image} alt="" loading="lazy" className="aspect-[16/9] w-full object-cover" />}
       <div className="flex flex-1 flex-col p-6 sm:p-7">
         <div className="flex items-start justify-between gap-4">
-          <span className="grid size-12 place-items-center rounded-2xl border border-signal-500/25 bg-signal-500/10 text-[#FF4D6A] transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-6">
+          <span className="grid size-12 place-items-center rounded-2xl border border-signal-500/25 bg-signal-500/10 text-primary-soft transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-6">
             <ServiceIcon service={service} className="size-6" strokeWidth={1.75} />
           </span>
           <span className="font-sans text-[11px] font-semibold tracking-[0.1em] text-white/30 tabular-nums">{String(index + 1).padStart(2, '0')}</span>

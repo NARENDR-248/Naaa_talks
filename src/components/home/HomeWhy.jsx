@@ -1,22 +1,21 @@
 import { useEffect, useRef } from 'react'
 import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from 'framer-motion'
-import { Camera, Check, ChevronDown, GraduationCap, Rocket, Star, TrendingUp, UsersRound } from 'lucide-react'
+import { Camera, Check, GraduationCap, Rocket, Star, TrendingUp, UsersRound } from 'lucide-react'
 import { portfolioData } from '@/data/portfolioData'
 import { REVEAL, ease } from '@/lib/motion'
-import { cn } from '@/lib/cn'
 
 const { whyChoose } = portfolioData
 const ICONS = { quality: Star, camera: Camera, grow: TrendingUp, team: UsersRound, educate: GraduationCap, execution: Rocket }
-// How far the ring turns over the pinned scroll (radians), and where the first card starts.
-const SWEEP = Math.PI * 1.7
-const START = -Math.PI / 2
+// How far the ring turns while the section crosses the screen (radians), and where the
+// first card starts. The section is not pinned: the turn spans its normal pass.
+const SWEEP = Math.PI * 1.1
+const START = -Math.PI / 2 - SWEEP / 2
 
-// Orbit size for the current stage: cards stay inside the width and clear of the headline.
+// Orbit size for the current stage: cards stay clear of the headline; on phones side
+// cards may slip partly past the edge (as in the reference) instead of covering the text.
 function orbitSize(w, h) {
   const card = w >= 1024 ? 176 : w >= 640 ? 144 : 104
   return {
-    // Phones: let side cards slip partly past the edge (as in the reference) so they
-    // pass beside the headline rather than behind it.
     rx: w < 640 ? w / 2 - card * 0.12 : Math.min(w / 2 - card / 2 - 10, 560),
     ry: Math.min(h / 2 - card * 0.4 - 70, 300),
   }
@@ -44,13 +43,13 @@ function OrbitCard({ item, index, count, turn, enter, rx, ry }) {
           <img src={item.image} alt="" loading="lazy" draggable={false} className="size-full object-cover" />
           <span aria-hidden className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/5" />
           <span className="absolute right-2 bottom-2 left-2 flex items-center gap-1.5 sm:right-2.5 sm:bottom-2.5 sm:left-2.5">
-            <span className="grid size-5 shrink-0 place-items-center rounded-full bg-[#FF1744] text-white sm:size-6">
+            <span className="grid size-5 shrink-0 place-items-center rounded-full bg-primary text-white sm:size-6">
               <Icon className="size-3 sm:size-3.5" strokeWidth={2} aria-hidden />
             </span>
             <span className="line-clamp-2 text-[10px] leading-tight font-semibold text-white sm:text-xs">{item.label}</span>
           </span>
           {/* Red edge that brightens as the card swings to the front */}
-          <motion.span aria-hidden style={{ opacity: glow }} className="pointer-events-none absolute inset-0 rounded-[inherit] border border-[#FF1744]/80 shadow-[inset_0_0_24px_rgb(255_23_68/0.25)]" />
+          <motion.span aria-hidden style={{ opacity: glow }} className="pointer-events-none absolute inset-0 rounded-[inherit] border border-primary/80 shadow-[inset_0_0_24px_rgb(255_23_68/0.25)]" />
         </div>
         <motion.span aria-hidden style={{ opacity: glow }} className="pointer-events-none absolute -inset-3 -z-10 rounded-3xl bg-[radial-gradient(closest-side,rgb(255_23_68/0.35),transparent)] blur-md" />
       </div>
@@ -58,27 +57,25 @@ function OrbitCard({ item, index, count, turn, enter, rx, ry }) {
   )
 }
 
-// Homepage "Why choose NAAA TALKS": the section pins while scrolling turns six cards
-// around the fixed headline (forwards on scroll down, backwards on scroll up, still when
-// the page is still). Reduced-motion visitors get the same layout without the pin or motion.
+// Homepage "Why choose NAAA TALKS": six upright cards orbit the fixed headline as the
+// section scrolls through the screen (forwards on scroll down, backwards on scroll up,
+// still when the page is still). Not pinned, so it adds no extra scroll length.
 export default function HomeWhy() {
-  const track = useRef(null)
   const stage = useRef(null)
   const reduce = useReducedMotion()
   const rx = useMotionValue(420)
   const ry = useMotionValue(240)
 
-  // Pinned scroll → orbit progress, lightly smoothed so it glides like a scrub.
-  const { scrollYProgress } = useScroll({ target: track, offset: ['start start', 'end end'] })
+  // The section's pass across the screen → orbit turn, lightly smoothed like a scrub.
+  const { scrollYProgress } = useScroll({ target: stage, offset: ['start end', 'end start'] })
   const smooth = useSpring(scrollYProgress, { stiffness: 90, damping: 26, mass: 0.35 })
-  // Section entering the screen → cards spread out from the centre and fade in.
-  const { scrollYProgress: entering } = useScroll({ target: track, offset: ['start end', 'start 0.15'] })
+  // Section entering → cards spread out from the centre and fade in.
+  const { scrollYProgress: entering } = useScroll({ target: stage, offset: ['start end', 'start 0.2'] })
   const enterSmooth = useSpring(entering, { stiffness: 90, damping: 26, mass: 0.35 })
-  const still = useMotionValue(0)
+  const still = useMotionValue(0.5)
   const full = useMotionValue(1)
   const turn = reduce ? still : smooth
   const enter = reduce ? full : enterSmooth
-  const hint = useTransform(smooth, [0, 0.12], [1, 0])
 
   // Keep the orbit fitted to the stage; motion values only, so resizing never re-renders.
   useEffect(() => {
@@ -94,8 +91,8 @@ export default function HomeWhy() {
   }, [rx, ry])
 
   return (
-    <section ref={track} aria-label="Why choose NAAA TALKS" className={cn('relative isolate', reduce ? '' : 'h-[240vh] lg:h-[280vh]')}>
-      <div ref={stage} className={cn('relative h-svh min-h-[34rem] overflow-hidden', !reduce && 'sticky top-0')}>
+    <section aria-label="Why choose NAAA TALKS" className="relative isolate">
+      <div ref={stage} className="relative h-svh min-h-[34rem] overflow-hidden">
         {/* Ambient red glow behind the headline */}
         <motion.div aria-hidden initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={REVEAL} transition={{ duration: 1.6, ease }} className="pointer-events-none absolute inset-0 -z-10">
           <div className="absolute top-1/2 left-1/2 size-[44rem] max-w-[140vw] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgb(140_10_30/0.42),transparent)]" />
@@ -117,7 +114,7 @@ export default function HomeWhy() {
               transition={{ duration: 0.7, ease }}
               className="inline-flex items-center gap-2 font-sans text-[10px] font-semibold tracking-[0.22em] text-white/55 uppercase sm:text-[11px]"
             >
-              <Check className="size-3.5 text-[#FF1744]" strokeWidth={3} aria-hidden />Why choose NAAA TALKS?
+              <Check className="size-3.5 text-primary" strokeWidth={3} aria-hidden />Why choose NAAA TALKS?
             </motion.p>
             <motion.h2
               initial={{ opacity: 0, scale: 0.9, filter: 'blur(10px)' }}
@@ -126,7 +123,7 @@ export default function HomeWhy() {
               transition={{ duration: 1, delay: 0.1, ease }}
               className="mt-3 font-display text-[2.1rem] leading-[1.05] font-semibold tracking-[-0.03em] text-white sm:text-5xl lg:text-[3.6rem]"
             >
-              We Create <span className="text-[#FF1744] [text-shadow:0_0_40px_rgb(255_23_68/0.45)]">Impact.</span>
+              We Create <span className="text-primary [text-shadow:0_0_40px_rgb(255_23_68/0.45)]">Impact.</span>
             </motion.h2>
             <motion.p
               initial={{ opacity: 0, y: 12 }}
@@ -139,13 +136,6 @@ export default function HomeWhy() {
             </motion.p>
           </div>
         </div>
-
-        {!reduce && (
-          <motion.div aria-hidden style={{ opacity: hint }} className="absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-1 text-[10px] font-semibold tracking-[0.24em] text-white/40 uppercase">
-            Scroll to explore
-            <ChevronDown className="size-4 animate-float text-[#FF1744]" aria-hidden />
-          </motion.div>
-        )}
       </div>
     </section>
   )
