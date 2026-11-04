@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
-import { AnimatePresence, motion, useMotionValue, useMotionValueEvent, useReducedMotion, useScroll, useSpring, useTransform } from 'framer-motion'
+import { useRef, useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useServicePages } from '@/hooks/useSiteContent'
@@ -11,20 +11,6 @@ import ServicePoster from './ServicePoster'
 
 const CATEGORIES = ['Creativity', 'Strategy', 'Growth']
 const pad = (n) => String(n + 1).padStart(2, '0')
-
-// True from tablet width up, where the pinned horizontal story runs.
-const WIDE = '(min-width: 768px)'
-function useWide() {
-  return useSyncExternalStore(
-    (cb) => {
-      const m = window.matchMedia(WIDE)
-      m.addEventListener('change', cb)
-      return () => m.removeEventListener('change', cb)
-    },
-    () => window.matchMedia(WIDE).matches,
-    () => true,
-  )
-}
 
 const word = {
   hidden: { opacity: 0, y: '0.6em', filter: 'blur(8px)' },
@@ -85,18 +71,32 @@ function ServiceInfo({ service, index, total, large = false }) {
 // Bottom strip: six thumbnails (active one framed in red) and a compact preview.
 function ThumbStrip({ services, active, onSelect }) {
   const s = services[active]
+  const tabs = useRef([])
+  // Arrow keys move between thumbnails (and select), as in a standard tab list.
+  const onKeyDown = (e) => {
+    const step = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key]
+    const to = e.key === 'Home' ? 0 : e.key === 'End' ? services.length - 1 : step ? (active + step + services.length) % services.length : null
+    if (to === null) return
+    e.preventDefault()
+    onSelect(to)
+    tabs.current[to]?.focus()
+  }
   return (
     <div className="mt-3 grid gap-4 rounded-[24px] border border-white/[0.07] bg-[#0b0b0b] p-3 sm:p-4 md:grid-cols-[1fr_auto] md:items-center">
-      <div className="no-scrollbar -mx-1 flex gap-2.5 overflow-x-auto px-1 py-1" role="tablist" aria-label="Choose a service">
+      <div className="no-scrollbar -mx-1 flex gap-2.5 overflow-x-auto px-1.5 py-2" role="tablist" aria-label="Choose a service" onKeyDown={onKeyDown}>
         {services.map((sv, i) => (
           <button
             key={sv.slug}
+            ref={(n) => { tabs.current[i] = n }}
+            id={`service-tab-${i}`}
             type="button"
             role="tab"
             aria-selected={i === active}
+            aria-controls="service-panel"
+            tabIndex={i === active ? 0 : -1}
             aria-label={sv.title}
             onClick={() => onSelect(i)}
-            className={cn('group relative w-12 shrink-0 rounded-xl transition-[filter,opacity] duration-500 sm:w-14 lg:w-16', i === active ? 'opacity-100' : 'opacity-45 brightness-75 hover:opacity-80')}
+            className={cn('group relative w-12 shrink-0 rounded-xl transition-[filter,opacity,scale] duration-500 sm:w-14 lg:w-16', i === active ? 'scale-105 opacity-100' : 'opacity-45 brightness-75 hover:opacity-80')}
           >
             <ServicePoster service={sv} index={i} compact />
             {i === active && <motion.span layoutId="service-thumb" transition={{ type: 'spring', stiffness: 380, damping: 32 }} className="pointer-events-none absolute -inset-1 rounded-[14px] border-2 border-primary shadow-[0_0_18px_-2px_rgb(255_23_68/0.8)]" />}
@@ -118,130 +118,39 @@ function ThumbStrip({ services, active, onSelect }) {
   )
 }
 
-// One poster on the pinned track: larger and flat at the focus point, smaller,
-// dimmer and turned slightly away the further it sits from it.
-function TrackPoster({ service, index, count, progress, active, onFocus }) {
-  const offset = useTransform(progress, (p) => index - p * (count - 1))
-  const scale = useTransform(offset, (o) => 1 - Math.min(Math.abs(o), 1.5) * 0.1)
-  const rotateY = useTransform(offset, (o) => Math.max(-1, Math.min(1, o)) * -12)
-  const opacity = useTransform(offset, (o) => (o < -0.6 ? Math.max(0, 1 + (o + 0.6) * 2.2) : 1 - Math.min(o, 3) * 0.16))
-  return (
-    <motion.li style={{ scale, rotateY, opacity }} className="aspect-[7/10] h-full shrink-0 origin-left [transform-style:preserve-3d]">
-      <Link
-        to={`/services/${service.slug}`}
-        aria-label={service.title}
-        // Keyboard focus moves the page to this poster's spot in the story.
-        onFocus={(e) => e.currentTarget.matches(':focus-visible') && onFocus(index)}
-        className={cn('group block h-full transition-[translate,filter] duration-500 hover:-translate-y-2', active && 'drop-shadow-[0_24px_50px_rgb(255_23_68/0.35)]')}
-      >
-        <ServicePoster service={service} index={index} className="size-full" />
-      </Link>
-    </motion.li>
-  )
-}
-
-// Tablet and desktop: the section pins while vertical scroll slides the posters left.
-function PinnedShowcase({ services }) {
-  const n = services.length
-  const section = useRef(null)
-  const track = useRef(null)
-  const distance = useMotionValue(0)
+// One service at a time: the left details, the single active poster and the thumbnail
+// strip all follow `active`; thumbnails are the only way to change it.
+function Showcase({ services }) {
   const [active, setActive] = useState(0)
-
-  const { scrollYProgress } = useScroll({ target: section, offset: ['start start', 'end end'] })
-  const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.4 })
-  const x = useTransform([progress, distance], ([p, d]) => -p * d)
-  useMotionValueEvent(progress, 'change', (p) => setActive(Math.min(n - 1, Math.max(0, Math.round(p * (n - 1))))))
-
-  // Distance from the first poster to the last, measured from the real layout.
-  useEffect(() => {
-    const el = track.current
-    if (!el) return
-    const measure = () => {
-      const [a, b] = el.children
-      distance.set(a && b ? (b.offsetLeft - a.offsetLeft) * (n - 1) : 0)
-    }
-    const ro = new ResizeObserver(measure)
-    ro.observe(el)
-    return () => ro.disconnect()
-  }, [distance, n])
-
-  // Thumbnail → scroll the page to the point where that service is in focus.
-  // Keyboard focus jumps straight there ('instant'), so the focused poster is in view at once.
-  const select = (i, behavior = 'smooth') => {
-    const el = section.current
-    if (!el) return
-    const top = el.getBoundingClientRect().top + window.scrollY
-    window.scrollTo({ top: top + (i / (n - 1)) * (el.offsetHeight - window.innerHeight) + 2, behavior })
-  }
-
+  const s = services[active]
   return (
-    <section ref={section} id="services" aria-label="Our services" className="relative isolate" style={{ height: `${100 + (n - 1) * 30}vh` }}>
-      <div className="sticky top-0 flex h-svh flex-col justify-center overflow-clip pt-20 pb-5">
-        <Glow />
-        <Shell className="w-full">
-          <div className="grid h-[min(60svh,34rem)] grid-cols-[minmax(0,35fr)_minmax(0,65fr)] grid-rows-[minmax(0,1fr)] gap-6 overflow-clip rounded-[32px] border border-white/[0.07] bg-[#080808] p-6 lg:gap-10 lg:p-9">
-            <div className="flex min-w-0 flex-col justify-between">
-              <Brand />
-              <ServiceInfo service={services[active]} index={active} total={n} large />
-            </div>
-            <div className="relative min-w-0 [perspective:1400px] [mask-image:linear-gradient(90deg,#000_88%,transparent)]">
-              <motion.ul ref={track} style={{ x }} className="flex h-full gap-5 will-change-transform [transform-style:preserve-3d]">
-                {services.map((s, i) => <TrackPoster key={s.slug} service={s} index={i} count={n} progress={progress} active={i === active} onFocus={(j) => select(j, 'instant')} />)}
-              </motion.ul>
-            </div>
-          </div>
-          <ThumbStrip services={services} active={active} onSelect={select} />
-        </Shell>
-      </div>
-    </section>
-  )
-}
-
-// Phones (and reduced motion): a swipeable poster carousel with the same details and strip.
-function SwipeShowcase({ services }) {
-  const list = useRef(null)
-  const [active, setActive] = useState(0)
-
-  useEffect(() => {
-    const el = list.current
-    if (!el) return
-    const onScroll = () => {
-      const mid = el.scrollLeft + el.clientWidth / 2
-      let best = 0
-      ;[...el.children].forEach((c, i) => {
-        if (Math.abs(c.offsetLeft + c.offsetWidth / 2 - mid) < Math.abs(el.children[best].offsetLeft + el.children[best].offsetWidth / 2 - mid)) best = i
-      })
-      setActive(best)
-    }
-    el.addEventListener('scroll', onScroll, { passive: true })
-    return () => el.removeEventListener('scroll', onScroll)
-  }, [])
-
-  const select = (i) => {
-    const el = list.current
-    const c = el?.children[i]
-    if (c) el.scrollTo({ left: c.offsetLeft - (el.clientWidth - c.offsetWidth) / 2, behavior: 'smooth' })
-  }
-
-  return (
-    <section id="services" aria-label="Our services" className="relative isolate overflow-x-clip section-y">
+    <section id="services" aria-label="Our services" className="relative isolate scroll-mt-20 overflow-x-clip section-y">
       <Glow />
       <Shell>
-        <div className="rounded-[28px] border border-white/[0.07] bg-[#080808] py-5">
-          <div className="px-5"><Brand /></div>
-          <ul ref={list} className="no-scrollbar mt-5 flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth px-[14%]" aria-label="Services">
-            {services.map((s, i) => (
-              <motion.li key={s.slug} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: i * 0.05, ease }} className="w-[72%] shrink-0 snap-center">
-                <Link to={`/services/${s.slug}`} aria-label={s.title} className={cn('group block transition-[scale,opacity] duration-500', i === active ? 'scale-100' : 'scale-[0.92] opacity-60')}>
-                  <ServicePoster service={s} index={i} />
+        <div className="grid gap-7 overflow-clip rounded-[28px] border border-white/[0.07] bg-[#080808] p-5 sm:rounded-[32px] sm:p-7 md:grid-cols-[minmax(0,35fr)_minmax(0,65fr)] md:items-center md:gap-8 lg:gap-10 lg:p-9">
+          <div className="flex min-w-0 flex-col gap-8 md:min-h-[26rem] md:justify-between">
+            <Brand />
+            <ServiceInfo service={s} index={active} total={services.length} large />
+          </div>
+          <div id="service-panel" role="tabpanel" aria-labelledby={`service-tab-${active}`} className="relative grid min-w-0 place-items-center">
+            <div aria-hidden className="pointer-events-none absolute top-1/2 left-1/2 size-[24rem] max-w-full -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgb(255_23_68/0.22),transparent)] blur-2xl" />
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={s.slug}
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -14 }}
+                transition={{ duration: 0.42, ease }}
+                className="relative w-full max-w-[17.5rem] sm:max-w-[19rem] lg:max-w-[21rem]"
+              >
+                <Link to={`/services/${s.slug}`} aria-label={`${s.title}: explore service`} className="group block transition-[translate] duration-500 hover:-translate-y-2">
+                  <ServicePoster service={s} index={active} className="shadow-[0_40px_80px_-40px_rgb(255_23_68/0.55)]" />
                 </Link>
-              </motion.li>
-            ))}
-          </ul>
-          <div className="mt-6 px-5"><ServiceInfo service={services[active]} index={active} total={services.length} /></div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
-        <ThumbStrip services={services} active={active} onSelect={select} />
+        <ThumbStrip services={services} active={active} onSelect={setActive} />
       </Shell>
     </section>
   )
@@ -269,10 +178,9 @@ function Glow() {
 }
 
 // Homepage "Our services": a cinematic horizontal showcase of the service pages.
+// Homepage "Our services": one service card at a time, chosen from the thumbnail strip.
 export default function HomeServices() {
   const services = useServicePages().filter((s) => s.slug)
-  const wide = useWide()
-  const reduce = useReducedMotion()
   if (!services.length) return null
-  return wide && !reduce ? <PinnedShowcase services={services} /> : <SwipeShowcase services={services} />
+  return <Showcase services={services} />
 }
