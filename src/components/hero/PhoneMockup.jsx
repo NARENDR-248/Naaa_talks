@@ -1,5 +1,7 @@
 import { Clapperboard, Ellipsis, Grid3x3 } from 'lucide-react'
 import { cn } from '@/lib/cn'
+import { portfolioData } from '@/data/portfolioData'
+import { useSiteContent } from '@/hooks/useSiteContent'
 
 // Sunset / dusk tiles standing in for posts on the Instagram-style profile grid.
 const TILES = [
@@ -23,6 +25,8 @@ function Silhouette() {
 
 // A phone showing the NAAA TALKS profile grid. Decorative.
 export default function PhoneMockup({ className }) {
+  // Same logo as the navbar: an admin-uploaded logo, else the built-in one.
+  const logo = useSiteContent().settings.branding?.logo || portfolioData.brand.logo
   return (
     <div aria-hidden className={cn('@container rounded-[2.6rem] bg-[linear-gradient(140deg,#5b0f18,#1a0508_35%,#2a070c_65%,#6d1220)] p-[3.2%] shadow-[0_0_0_1px_rgb(255_40_60/0.45),0_30px_80px_-20px_rgb(255_16_31/0.55)]', className)}>
       <div className="relative flex size-full flex-col overflow-hidden rounded-[2.2rem] bg-[#0a0a0c] pt-[9%]">
@@ -33,7 +37,12 @@ export default function PhoneMockup({ className }) {
               N<span className="text-signal-500">/</span>T
             </span>
           </span>
-          <span className="truncate font-sans text-[5.2cqw] font-semibold text-white">naaatalks</span>
+          {/* Profile name: the NAAA TALKS logo (falls back to the handle) */}
+          {logo ? (
+            <img src={logo} alt="" draggable={false} className="block h-[6.5cqw] w-auto min-w-0 object-contain" />
+          ) : (
+            <span className="truncate font-sans text-[5.2cqw] font-semibold text-white">naaatalks</span>
+          )}
           <Ellipsis className="ml-auto w-[10%] text-white/80" />
         </div>
         <div className="mt-[8%] grid grid-cols-2 border-b border-white/10 text-white/80">
