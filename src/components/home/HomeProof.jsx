@@ -41,7 +41,7 @@ function ClientLogo({ client: c, index, hidden, active }) {
   const f = FLOAT[index % FLOAT.length]
   const plate = c.plate === 'light' ? 'bg-white' : 'bg-white/[0.06]'
   return (
-    <motion.li variants={logoIn} aria-hidden={hidden || undefined} className="shrink-0 pr-4 sm:pr-5 lg:pr-6">
+    <motion.li variants={logoIn} aria-hidden={hidden || undefined} className="shrink-0 pr-4 sm:pr-5 lg:pr-10">
       <div
         style={{ '--float-y': `${f.y}px`, '--float-rot': `${f.rot}deg`, animationDuration: `${f.dur}s`, animationDelay: `${f.delay}s` }}
         className="animate-card-float motion-reduce:animate-none"
@@ -50,7 +50,9 @@ function ClientLogo({ client: c, index, hidden, active }) {
           {...link}
           tabIndex={hidden ? -1 : undefined}
           className={cn(
-            'group/logo relative grid h-[5.5rem] w-[9.25rem] place-items-center overflow-hidden rounded-2xl border p-3 backdrop-blur-sm transition-[background-color,border-color,box-shadow,scale] duration-500 sm:h-28 sm:w-48 lg:h-32 lg:w-56',
+            // Fixed card; the logo is fitted inside a padded box (flex centring, so max-height is
+            // measured against the card, never the image's own height).
+            'group/logo relative flex h-20 w-[8.5rem] items-center justify-center overflow-hidden rounded-2xl border p-3 backdrop-blur-sm transition-[background-color,border-color,box-shadow,scale] duration-500 sm:h-24 sm:w-40 sm:p-4 lg:h-[110px] lg:w-[190px] lg:p-5',
             'hover:scale-[1.06] hover:border-primary/60 hover:shadow-[0_22px_55px_-22px_rgb(255_23_68/0.8)]',
             c.plate === 'light' ? 'hover:bg-white' : 'hover:bg-white/[0.06]',
             active
@@ -67,8 +69,12 @@ function ClientLogo({ client: c, index, hidden, active }) {
               loading="lazy"
               draggable={false}
               className={cn(
-                'relative size-full object-contain transition-[filter,opacity] duration-500',
-                active ? 'opacity-100' : 'opacity-55 brightness-0 invert grayscale group-hover/logo:opacity-100 group-hover/logo:brightness-100 group-hover/logo:invert-0 group-hover/logo:grayscale-0',
+                'relative block h-auto max-h-full w-auto max-w-full object-contain object-center transition-[filter,opacity] duration-500',
+                // At rest: muted greyscale (dark-ink logos are inverted so they stay visible on
+                // the dark card). Active or hovered: the original colours.
+                active
+                  ? 'opacity-100'
+                  : cn('opacity-60 grayscale group-hover/logo:opacity-100 group-hover/logo:grayscale-0', c.plate === 'light' && 'invert group-hover/logo:invert-0'),
               )}
             />
           ) : (

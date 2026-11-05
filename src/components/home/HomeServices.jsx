@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
+import { AnimatePresence, motion, useInView } from 'framer-motion'
 import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { useServicePages } from '@/hooks/useSiteContent'
@@ -11,6 +11,14 @@ import ServicePoster from './ServicePoster'
 
 const CATEGORIES = ['Creativity', 'Strategy', 'Growth']
 const pad = (n) => String(n + 1).padStart(2, '0')
+const AUTOPLAY_MS = 4000
+
+// True while the browser tab is visible (autoplay waits while it is hidden).
+const onVisibility = (cb) => {
+  document.addEventListener('visibilitychange', cb)
+  return () => document.removeEventListener('visibilitychange', cb)
+}
+const useTabVisible = () => useSyncExternalStore(onVisibility, () => document.visibilityState === 'visible', () => true)
 
 const word = {
   hidden: { opacity: 0, y: '0.6em', filter: 'blur(8px)' },
@@ -18,8 +26,10 @@ const word = {
   exit: { opacity: 0, y: '-0.4em', filter: 'blur(6px)', transition: { duration: 0.25 } },
 }
 
-// Active service details: title by word, description and button sliding in.
-function ServiceInfo({ service, index, total, large = false }) {
+// Active service details: title by word, description and button sliding in. With
+// `timer`, the line between the numbers fills over the autoplay interval (visual only;
+// the switching itself is a JS timer, so it also works when animations are reduced).
+function ServiceInfo({ service, index, total, large = false, timer }) {
   const v = visualFor(service)
   return (
     <div className="flex min-w-0 flex-col">
@@ -29,8 +39,16 @@ function ServiceInfo({ service, index, total, large = false }) {
             <motion.span key={index} initial={{ y: '100%' }} animate={{ y: 0 }} exit={{ y: '-100%' }} transition={{ duration: 0.45, ease }} className="text-primary">{pad(index)}</motion.span>
           </AnimatePresence>
         </span>
-        <span className="h-px w-10 overflow-hidden bg-white/15">
-          <motion.span animate={{ scaleX: (index + 1) / total }} transition={{ duration: 0.5, ease }} className="block h-full origin-left bg-primary" />
+        <span className="h-[2px] w-12 overflow-hidden rounded-full bg-white/15">
+          {timer ? (
+            <span
+              key={`${index}-${timer.cycle}`}
+              style={{ animationDuration: `${AUTOPLAY_MS}ms`, animationPlayState: timer.paused ? 'paused' : 'running' }}
+              className="block h-full origin-left animate-autoplay-fill rounded-full bg-primary"
+            />
+          ) : (
+            <motion.span animate={{ scaleX: (index + 1) / total }} transition={{ duration: 0.5, ease }} className="block h-full origin-left bg-primary" />
+          )}
         </span>
         <span className="text-white/40">{pad(total - 1)}</span>
       </div>
@@ -119,28 +137,55 @@ function ThumbStrip({ services, active, onSelect }) {
 }
 
 // One service at a time: the left details, the single active poster and the thumbnail
-// strip all follow `active`; thumbnails are the only way to change it.
+// strip all follow `active`. One interval advances it every 4 s, looping 06 → 01. It
+// starts on its own; a thumbnail pick (`cycle`) restarts it so the 4 s countdown begins
+// again, and there is never more than one timer. It only waits while the browser tab is
+// hidden. It runs even with reduced motion: that setting only softens transitions.
 function Showcase({ services }) {
   const [active, setActive] = useState(0)
+  const [cycle, setCycle] = useState(0) // bumps on manual picks so the countdown restarts
+  const tabVisible = useTabVisible()
+  // Autoplay begins (at 01) the first time the section is on screen, so visitors see the
+  // sequence from the start rather than joining it part-way through.
+  const section = useRef(null)
+  const started = useInView(section, { once: true, amount: 0.4 })
+  const count = services.length
   const s = services[active]
+
+  useEffect(() => {
+    if (count < 2 || !tabVisible || !started) return
+    const t = setInterval(() => setActive((i) => (i + 1) % count), AUTOPLAY_MS)
+    return () => clearInterval(t)
+  }, [cycle, count, tabVisible, started])
+
+  const select = (i) => {
+    setActive(i)
+    setCycle((c) => c + 1)
+  }
+  const timer = count < 2 ? null : { cycle, paused: !tabVisible || !started }
+
   return (
-    <section id="services" aria-label="Our services" className="relative isolate scroll-mt-20 overflow-x-clip section-y">
+    <section
+      ref={section}
+      id="services"
+      aria-label="Our services"
+      className="relative isolate scroll-mt-20 overflow-x-clip section-y">
       <Glow />
       <Shell>
         <div className="grid gap-7 overflow-clip rounded-[28px] border border-white/[0.07] bg-[#080808] p-5 sm:rounded-[32px] sm:p-7 md:grid-cols-[minmax(0,35fr)_minmax(0,65fr)] md:items-center md:gap-8 lg:gap-10 lg:p-9">
           <div className="flex min-w-0 flex-col gap-8 md:min-h-[26rem] md:justify-between">
             <Brand />
-            <ServiceInfo service={s} index={active} total={services.length} large />
+            <ServiceInfo service={s} index={active} total={services.length} large timer={timer} />
           </div>
           <div id="service-panel" role="tabpanel" aria-labelledby={`service-tab-${active}`} className="relative grid min-w-0 place-items-center">
             <div aria-hidden className="pointer-events-none absolute top-1/2 left-1/2 size-[24rem] max-w-full -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgb(255_23_68/0.22),transparent)] blur-2xl" />
             <AnimatePresence mode="wait" initial={false}>
               <motion.div
                 key={s.slug}
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -14 }}
-                transition={{ duration: 0.42, ease }}
+                initial={{ opacity: 0, y: 24, scale: 0.96 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -14, scale: 0.98 }}
+                transition={{ duration: 0.45, ease }}
                 className="relative w-full max-w-[17.5rem] sm:max-w-[19rem] lg:max-w-[21rem]"
               >
                 <Link to={`/services/${s.slug}`} aria-label={`${s.title}: explore service`} className="group block transition-[translate] duration-500 hover:-translate-y-2">
@@ -150,7 +195,7 @@ function Showcase({ services }) {
             </AnimatePresence>
           </div>
         </div>
-        <ThumbStrip services={services} active={active} onSelect={setActive} />
+        <ThumbStrip services={services} active={active} onSelect={select} />
       </Shell>
     </section>
   )
